@@ -3,4 +3,4 @@ scikit-learn
 numpy
 matplotlib
 opencv-python-headless
-libgl1
+
