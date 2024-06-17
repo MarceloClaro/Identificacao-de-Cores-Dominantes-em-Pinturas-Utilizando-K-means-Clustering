@@ -4,11 +4,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 
-st.markdown("<h2 style='text-align: center;'Identificação de Cores Dominantes em Pinturas.</h2>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'Identificação de Cores Dominantes em Pinturas.</h1>", unsafe_allow_html=True)
 
 st.markdown("<hr>", unsafe_allow_html=True)
 # Título da caixa de informação
-
 st.markdown("<h2 style='text-align: center;'>“𝐂𝐨𝐧𝐡𝐞𝐜̧𝐚 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞𝐨𝐫𝐢𝐚𝐬,𝐝𝐨𝐦𝐢𝐧𝐞 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞́𝐜𝐧𝐢𝐜𝐚𝐬,𝐦𝐚𝐬 𝐚𝐨 𝐭𝐨𝐜𝐚𝐫 𝐮𝐦𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚,𝐬𝐞𝐣𝐚 𝐚𝐩𝐞𝐧𝐚𝐬 𝐨𝐮𝐭𝐫𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚” (𝐂.𝐆. 𝐉𝐮𝐧𝐠)</h2>", unsafe_allow_html=True)
 
 # Carregar a imagem a partir do upload do usuário
