@@ -52,13 +52,11 @@ if st.sidebar.button("Executar Análise"):
         st.image(image, caption="Imagem Original", use_column_width=True)
         
         # Plotar as cores dominantes como uma barra
-        fig, ax = plt.subplots(1, 1, figsize=(8, 2),
-                               subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
-        
+        fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
         for sp in ax.spines.values():
             sp.set_visible(False)
-          
-          ax.imshow([colors], aspect='auto')
+        
+        ax.imshow([colors], aspect='auto')
         st.pyplot(fig)
         
         # Plotar gráfico de pizza das cores dominantes
