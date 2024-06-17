@@ -2,5 +2,5 @@ streamlit
 scikit-learn
 numpy
 matplotlib
-opencv-python
-
+opencv-python-headless
+libgl1
