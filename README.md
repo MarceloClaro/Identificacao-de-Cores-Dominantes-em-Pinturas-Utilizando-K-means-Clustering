@@ -1,0 +1,1 @@
+# Identificacao-de-Cores-Dominantes-em-Pinturas-Utilizando-K-means-Clustering
