@@ -7,7 +7,7 @@ import cv2
 st.title('Identificação de Cores Dominantes em Pinturas')
 
 # Carregar a imagem a partir do upload do usuário
-st.sidebar.image("logo.png", width=200)
+st.sidebar.image("psicologia.jpg", width=200)
 with st.sidebar.expander("Instrução"):
     
     st.markdown("""
@@ -101,13 +101,13 @@ if st.sidebar.button("Executar"):
     else:
         st.error("Por favor, faça o upload de uma imagem.")
     
-st.sidebar.image("psicologia.jpg", width=80)
+st.sidebar.image("logo.png", width=80)
 st.sidebar.write("""
 Projeto Arteterapia 
-- Professores: Marcelo Claro.
+- Professores: Marcelo Claro (Coorientador).
 
 Graduanda: Nadielle Darc Batista Dias
 Whatsapp: (88)981587145
 
-Instagram: [https://www.instagram.com/_psicologias/](https://www.instagram.com/_psicologias/)
+Instagram: [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
     """)
