@@ -100,14 +100,14 @@ if st.sidebar.button("Executar"):
             st.write(f"Cor: {color}, Porcentagem: {percentage:.2%}")
     else:
         st.error("Por favor, faça o upload de uma imagem.")
-    st.sidebar.image("psicologia.jpg", width=80)
-    st.sidebar.write("""
-    Projeto Arteterapia 
-    - Professores: Marcelo Claro.
+    
+st.sidebar.image("psicologia.jpg", width=80)
+st.sidebar.write("""
+Projeto Arteterapia 
+- Professores: Marcelo Claro.
 
-    Graduanda: Nadielle Darc Batista Dias
+Graduanda: Nadielle Darc Batista Dias
+Whatsapp: (88)981587145
 
-    Whatsapp: (88)981587145
-
-    Instagram: [https://www.instagram.com/_psicologias/](https://www.instagram.com/_psicologias/)
+Instagram: [https://www.instagram.com/_psicologias/](https://www.instagram.com/_psicologias/)
     """)
