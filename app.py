@@ -8,33 +8,39 @@ st.title('Identificação de Cores Dominantes em Pinturas')
 
 # Carregar a imagem a partir do upload do usuário
 st.sidebar.image("psicologia.jpg", width=200)
-with st.sidebar.expander("Instrução"):
-    
+# Instruções na barra lateral
+with st.sidebar.expander("Instruções"):
     st.markdown("""
-    O código do Agente Expert Geomaker é um exemplo de uma aplicação de chat baseada em modelos de linguagem (LLMs) utilizando a biblioteca Streamlit e a API Groq. Aqui, vamos analisar detalhadamente o código e discutir suas inovações, pontos positivos e limitações.
+    Este aplicativo permite identificar as cores dominantes em uma pintura utilizando o algoritmo K-means Clustering. Siga as instruções abaixo para usar o aplicativo:
+
+    **Passos:**
+    1. Faça o upload de uma imagem utilizando o botão "Browse files".
+    2. Escolha o número de clusters para a segmentação de cores utilizando o controle deslizante.
+    3. Clique no botão "Executar" para processar a imagem.
+
+    **Detalhes Técnicos:**
+    - **Upload da Imagem:** O aplicativo aceita imagens nos formatos JPG, JPEG e PNG.
+    - **Número de Clusters:** Você pode selecionar entre 1 e 10 clusters para identificar diferentes cores dominantes na imagem.
+    - **Resultados:** O aplicativo exibirá uma barra com as cores dominantes e um gráfico de pizza mostrando a distribuição percentual de cada cor.
 
     **Inovações:**
-    - Suporte a múltiplos modelos de linguagem: O código permite que o usuário escolha entre diferentes modelos de linguagem, como o LLaMA, para gerar respostas mais precisas e personalizadas.
-    - Integração com a API Groq: A integração com a API Groq permite que o aplicativo utilize a capacidade de processamento de linguagem natural de alta performance para gerar respostas precisas.
-    - Refinamento de respostas: O código permite que o usuário refine as respostas do modelo de linguagem, tornando-as mais precisas e relevantes para a consulta.
-    - Avaliação com o RAG: A avaliação com o RAG (Rational Agent Generator) permite que o aplicativo avalie a qualidade e a precisão das respostas do modelo de linguagem.
+    - Utilização de técnicas de ciência de dados para análise de imagens.
+    - Interface interativa que permite personalização pelo usuário.
 
-    **Pontos positivos:**
-    - Personalização: O aplicativo permite que o usuário escolha entre diferentes modelos de linguagem e personalize as respostas de acordo com suas necessidades.
-    - Precisão: A integração com a API Groq e o refinamento de respostas garantem que as respostas sejam precisas e relevantes para a consulta.
-    - Flexibilidade: O código é flexível o suficiente para permitir que o usuário escolha entre diferentes modelos de linguagem e personalize as respostas.
+    **Pontos Positivos:**
+    - Fácil de usar e intuitivo, mesmo para usuários sem experiência prévia em processamento de imagens.
+    - Resultados visuais claros e informativos.
 
     **Limitações:**
-    - Dificuldade de uso: O aplicativo pode ser difícil de usar para os usuários que não têm experiência com modelos de linguagem ou API.
-    - Limitações de token: O código tem limitações em relação ao número de tokens que podem ser processados pelo modelo de linguagem.
-    - Necessidade de treinamento adicional: O modelo de linguagem pode precisar de treinamento adicional para lidar com consultas mais complexas ou específicas.
+    - O tempo de processamento pode variar dependendo do tamanho da imagem.
+    - A precisão da segmentação pode ser afetada por imagens com muitas cores semelhantes.
 
-    **Importância de ter colocado instruções em chinês:**
-    A linguagem chinesa tem uma densidade de informação mais alta do que muitas outras línguas, o que significa que os modelos de linguagem precisam processar menos tokens para entender o contexto e gerar respostas precisas. Isso torna a linguagem chinesa mais apropriada para a utilização de modelos de linguagem com baixa quantidade de tokens. Portanto, ter colocado instruções em chinês no código é um recurso importante para garantir que o aplicativo possa lidar com consultas em chinês de forma eficaz.
+    **Importância de Ter Instruções:**
+    - As instruções claras garantem que o aplicativo possa ser utilizado eficientemente por qualquer pessoa, independentemente do seu nível de conhecimento técnico.
 
-    Em resumo, o código é uma aplicação inovadora que combina modelos de linguagem com a API Groq para proporcionar respostas precisas e personalizadas. No entanto, é importante considerar as limitações do aplicativo e trabalhar para melhorá-lo ainda mais.
-""")
-
+    Em resumo, este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
+    """)
+    
 uploaded_file = st.sidebar.file_uploader("Escolha uma imagem...", type=["jpg", "jpeg", "png"])
 
 # Selecionar o número de clusters
