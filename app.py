@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import cv2
 
 st.title('Identificação de Cores Dominantes em Pinturas')
-
+st.sidebar.image("logo.png", width=200)
 # Carregar a imagem a partir do upload do usuário
 uploaded_file = st.sidebar.file_uploader("Escolha uma imagem...", type=["jpg", "jpeg", "png"])
 
