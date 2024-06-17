@@ -11,8 +11,9 @@ uploaded_file = st.sidebar.file_uploader("Escolha uma imagem...", type=["jpg", "
 
 # Selecionar o número de clusters
 st.sidebar.image("logo.png", width=200)
+
 num_clusters = st.sidebar.slider("Número de Clusters", 1, 10, 5)
-st.sidebar.image("logo.png", width=200)
+
 # Botão para executar a análise
 if st.sidebar.button("Executar"):
     if uploaded_file is not None:
