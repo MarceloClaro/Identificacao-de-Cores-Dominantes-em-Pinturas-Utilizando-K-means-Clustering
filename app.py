@@ -11,6 +11,7 @@ st.write("𝐂𝐨𝐧𝐡𝐞𝐜̧𝐚 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞�
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # Instruções na barra lateral
+st.sidebar.image("psicologia.jpg", width=200)
 with st.sidebar.expander("Instruções"):
     st.markdown("""
     Este aplicativo permite identificar as cores dominantes em uma pintura utilizando o algoritmo K-means Clustering. Siga as instruções abaixo para usar o aplicativo:
