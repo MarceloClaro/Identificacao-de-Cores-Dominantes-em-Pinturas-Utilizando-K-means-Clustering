@@ -4,16 +4,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 
-
-
+# Título e descrição
 st.markdown("<h1 style='text-align: center;'>Identificação de Cores Dominantes em Pinturas</h1>", unsafe_allow_html=True)
 st.markdown("<hr>", unsafe_allow_html=True)
-st.write("𝐂𝐨𝐧𝐡𝐞𝐜̧𝐚 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞𝐨𝐫𝐢𝐚𝐬,𝐝𝐨𝐦𝐢𝐧𝐞 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞́𝐜𝐧𝐢𝐜𝐚𝐬,𝐦𝐚𝐬 𝐚𝐨 𝐭𝐨𝐜𝐚𝐫 𝐮𝐦𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚,𝐬𝐞𝐣𝐚 𝐚𝐩𝐞𝐧𝐚𝐬 𝐨𝐮𝐭𝐫𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚 (𝐂.𝐆. 𝐉𝐮𝐧𝐠)")
-
+st.write("𝐂𝐨𝐧𝐡𝐞𝐜̧𝐚 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞𝐨𝐫𝐢𝐚𝐬, 𝐝𝐨𝐦𝐢𝐧𝐞 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞́𝐜𝐧𝐢𝐜𝐚𝐬, 𝐦𝐚𝐬 𝐚𝐨 𝐭𝐨𝐜𝐚𝐫 𝐮𝐦𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚, 𝐬𝐞𝐣𝐚 𝐚𝐩𝐞𝐧𝐚𝐬 𝐨𝐮𝐭𝐫𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚 (𝐂.𝐆. 𝐉𝐮𝐧𝐠)")
 st.markdown("<hr>", unsafe_allow_html=True)
 
-# Carregar a imagem a partir do upload do usuário
-st.sidebar.image("psicologia.jpg", width=200)
 # Instruções na barra lateral
 with st.sidebar.expander("Instruções"):
     st.markdown("""
@@ -46,12 +42,11 @@ with st.sidebar.expander("Instruções"):
 
     Em resumo, este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
     """)
-    
+
+# Upload da imagem pelo usuário
 uploaded_file = st.sidebar.file_uploader("Escolha uma imagem...", type=["jpg", "jpeg", "png"])
 
 # Selecionar o número de clusters
-
-
 num_clusters = st.sidebar.slider("Número de Clusters", 1, 10, 5)
 
 # Botão para executar a análise
@@ -80,6 +75,9 @@ if st.sidebar.button("Executar"):
 
         # Converter cores para valores inteiros
         colors = colors.astype(int)
+
+        # Mostrar a imagem original
+        st.image(image, caption='Imagem Analisada', use_column_width=True)
 
         # Mostrar as cores dominantes e suas porcentagens
         dominant_colors = []
@@ -112,7 +110,8 @@ if st.sidebar.button("Executar"):
             st.write(f"Cor: {color}, Porcentagem: {percentage:.2%}")
     else:
         st.error("Por favor, faça o upload de uma imagem.")
-    
+
+# Informações adicionais na barra lateral
 st.sidebar.image("logo.png", width=80)
 st.sidebar.write("""
 Projeto Arteterapia 
@@ -122,4 +121,4 @@ Graduanda: Nadielle Darc Batista Dias
 Whatsapp: (88)981587145
 
 Instagram: [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
-    """)
+""")
