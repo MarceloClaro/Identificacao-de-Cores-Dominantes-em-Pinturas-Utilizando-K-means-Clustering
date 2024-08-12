@@ -100,6 +100,26 @@ def interpret_color_psychology(color):
         return "Roxo: Ligado à espiritualidade, transformação e mistério."
     elif r > 0.9 and g > 0.5 and b < 0.2:
         return "Laranja: Representa energia, criatividade, e entusiasmo."
+    elif r > 0.5 and g > 0.7 and b > 0.5:
+        return "Verde-claro: Associado à tranquilidade, frescor e harmonia."
+    elif r < 0.5 and g > 0.8 and b < 0.5:
+        return "Verde-menta: Representa renovação, frescor e crescimento."
+    elif r < 0.2 and g < 0.2 and b < 0.2:
+        return "Preto: Representa poder, mistério, e morte."
+    elif r < 0.4 and g > 0.4 and b > 0.8:
+        return "Azul-cobalto: Simboliza clareza, precisão e foco."
+    elif r < 0.3 and g < 0.4 and b < 0.5:
+        return "Azul-marinho: Representa autoridade, confiança e estabilidade."
+    elif r > 0.3 and g > 0.7 and b > 0.7:
+        return "Turquesa: Representa equilíbrio emocional e tranquilidade."
+    elif r < 0.1 and g < 0.1 and b < 0.1:
+        return "Carvão: Representa seriedade, profundidade e introspecção."
+    elif r > 0.7 and g > 0.8 and b < 0.5:
+        return "Chartreuse: Associado à criatividade, inovação e inspiração."
+    elif r > 0.9 and g > 0.9 and b > 0.8:
+        return "Marfim: Simboliza elegância, pureza e sofisticação."
+    elif r > 0.7 and g < 0.2 and b < 0.3:
+        return "Carmesim: Representa paixão, intensidade e força."
     elif r < 0.5 and g < 0.5 and b < 0.5:
         return "Cinza: Simboliza neutralidade, sabedoria e maturidade."
     elif r > 0.9 and g < 0.6 and b < 0.6:
@@ -110,43 +130,24 @@ def interpret_color_psychology(color):
         return "Dourado: Simboliza poder, riqueza e iluminação."
     elif r > 0.7 and g > 0.7 and b > 0.7:
         return "Prata: Conectado à pureza, precisão, e integridade."
-    elif r > 0.3 and g > 0.7 and b > 0.7:
-        return "Turquesa: Representa equilíbrio emocional e tranquilidade."
-    elif r < 0.4 and g > 0.8 and b > 0.5:
-        return "Verde-azulado: Ligado à calma, sofisticação e introspecção."
-    elif r > 0.9 and g > 0.7 and b < 0.2:
-        return "Âmbar: Simboliza calor, segurança e aconchego."
-    elif r > 0.8 and g > 0.7 and b > 0.5:
-        return "Bege: Representa simplicidade, confiabilidade e tradição."
-    elif r > 0.5 and g < 0.3 and b < 0.3:
-        return "Bordô: Associado à sofisticação, poder e controle."
     elif r < 0.4 and g > 0.5 and b < 0.3:
         return "Verde-oliva: Representa paz, diplomacia e harmonia."
     elif r > 0.8 and g > 0.7 and b > 0.9:
         return "Lavanda: Ligado à serenidade, graça e elegância."
     elif r < 0.5 and g < 0.4 and b < 0.3:
         return "Marrom: Simboliza estabilidade, confiabilidade e segurança."
-    elif r < 0.3 and g < 0.4 and b < 0.5:
-        return "Azul-marinho: Representa autoridade, confiança e estabilidade."
     elif r > 0.9 and g > 0.6 and b < 0.5:
         return "Pêssego: Simboliza calor, conforto e carinho."
-    elif r < 0.5 and g > 0.8 and b < 0.5:
-        return "Verde-menta: Representa renovação, frescor e crescimento."
     elif r > 0.9 and g < 0.5 and b < 0.4:
         return "Coral: Simboliza entusiasmo, energia e vitalidade."
-    elif r < 0.1 and g < 0.1 and b < 0.1:
-        return "Carvão: Representa seriedade, profundidade e introspecção."
-    elif r > 0.7 and g > 0.8 and b < 0.5:
-        return "Chartreuse: Associado à criatividade, inovação e inspiração."
-    elif r > 0.9 and g > 0.9 and b > 0.8:
-        return "Marfim: Simboliza elegância, pureza e sofisticação."
-    elif r > 0.7 and g < 0.2 and b < 0.3:
-        return "Carmesim: Representa paixão, intensidade e força."
-    elif r < 0.4 and g > 0.4 and b > 0.8:
-        return "Azul-cobalto: Simboliza clareza, precisão e foco."
+    elif r > 0.8 and g > 0.7 and b > 0.5:
+        return "Bege: Representa simplicidade, confiabilidade e tradição."
+    elif r > 0.5 and g < 0.3 and b < 0.3:
+        return "Bordô: Associado à sofisticação, poder e controle."
+    elif r > 0.9 and g > 0.7 and b < 0.2:
+        return "Âmbar: Simboliza calor, segurança e aconchego."
     else:
         return "Cor não identificada. Consulte manualmente."
-
 
 
 
