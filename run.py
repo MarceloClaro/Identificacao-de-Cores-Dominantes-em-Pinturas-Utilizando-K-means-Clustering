@@ -46,17 +46,7 @@ with st.sidebar.expander("Instruções"):
     Em resumo, este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
     """)
 
-# Informações adicionais na barra lateral
-st.sidebar.image("logo.png", width=80)
-st.sidebar.write("""
-Projeto Arteterapia 
-- Professores: Marcelo Claro (Coorientador).
 
-Graduanda: Nadielle Darc Batista Dias
-Whatsapp: (88)981587145
-
-Instagram: [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
-""")
 
 # Função para garantir que as cores estejam no formato adequado para o matplotlib
 def validate_color(color):
@@ -171,3 +161,15 @@ if st.sidebar.button("Executar"):
 
     else:
         st.error("Por favor, faça o upload de pelo menos uma imagem.")
+
+# Informações adicionais na barra lateral
+st.sidebar.image("logo.png", width=80)
+st.sidebar.write("""
+Projeto Arteterapia 
+- Professores: Marcelo Claro (Coorientador).
+
+Graduanda: Nadielle Darc Batista Dias
+Whatsapp: (88)981587145
+
+Instagram: [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
+""")
