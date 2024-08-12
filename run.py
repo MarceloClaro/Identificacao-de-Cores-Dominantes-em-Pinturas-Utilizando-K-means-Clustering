@@ -175,9 +175,9 @@ if st.sidebar.button("Executar"):
             fig, ax = plt.subplots(figsize=(10, 5))
             for i, stats in enumerate(statistics):
                 ci = stats['confidence_interval']
-                ax.errorbar(i, stats['mean'][0], yerr=[[stats['mean'][0'] - ci[0, 0]], [ci[1, 0] - stats['mean'][0]]], fmt='o', color='r', label='CI R' if i == 0 else "")
-                ax.errorbar(i, stats['mean'][1], yerr=[[stats['mean'][1'] - ci[0, 1]], [ci[1, 1] - stats['mean'][1]]], fmt='o', color='g', label='CI G' if i == 0 else "")
-                ax.errorbar(i, stats['mean'][2], yerr=[[stats['mean'][2'] - ci[0, 2]], [ci[1, 2] - stats['mean'][2]]], fmt='o', color='b', label='CI B' if i == 0 else "")
+                ax.errorbar(i, stats['mean'][0], yerr=[[stats['mean'][0] - ci[0, 0]], [ci[1, 0] - stats['mean'][0]]], fmt='o', color='r', label='CI R' if i == 0 else "")
+                ax.errorbar(i, stats['mean'][1], yerr=[[stats['mean'][1] - ci[0, 1]], [ci[1, 1] - stats['mean'][1]]], fmt='o', color='g', label='CI G' if i == 0 else "")
+                ax.errorbar(i, stats['mean'][2], yerr=[[stats['mean'][2] - ci[0, 2]], [ci[1, 2] - stats['mean'][2]]], fmt='o', color='b', label='CI B' if i == 0 else "")
             ax.set_xticks(range(num_clusters))
             ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
             ax.set_ylabel('Valor de Cor (RGB)')
@@ -199,3 +199,4 @@ Whatsapp: (88)981587145
 
 Instagram: [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
 """)
+
