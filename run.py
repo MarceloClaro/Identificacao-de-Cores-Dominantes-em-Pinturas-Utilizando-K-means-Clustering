@@ -123,7 +123,11 @@ if st.sidebar.button("Executar"):
             fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
             for sp in ax.spines.values():
                 sp.set_visible(False)
-            ax.imshow([colors], aspect='auto')
+            bar_width = 1
+            index = np.arange(len(colors))
+            ax.bar(index, [1] * len(colors), color=[f'#{r:02x}{g:02x}{b:02x}' for r, g, b in colors], width=bar_width)
+            ax.set_xticks(index)
+            ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
             plt.title("Cores Dominantes")
             st.pyplot(fig)
 
@@ -149,7 +153,7 @@ if st.sidebar.button("Executar"):
             rects3 = ax.bar(index + bar_width, std_devs[:, 2], bar_width, color='b', label='Desvio Padrão B')
             ax.set_xticks(index)
             ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
-            ax.set_ylabel('Desvio Padrão de Cor (RGB)')
+            ax.set_ylabel('Desvio Padrão (RGB)')
             ax.set_title('Desvio Padrão das Cores Dominantes')
             ax.legend(loc='upper right')
             st.pyplot(fig)
@@ -157,8 +161,8 @@ if st.sidebar.button("Executar"):
             # Gráfico do intervalo de confiança das cores
             fig, ax = plt.subplots(figsize=(10, 5))
             for i, stats in enumerate(statistics):
-                ci = stats['confidence_interval']
                 mean_color = stats['mean']
+                ci = stats['confidence_interval']
                 ax.errorbar(i, mean_color[0], yerr=[mean_color[0] - ci[0, 0], ci[1, 0] - mean_color[0]], fmt='o', color='r', label='CI R' if i == 0 else "")
                 ax.errorbar(i, mean_color[1], yerr=[mean_color[1] - ci[0, 1], ci[1, 1] - mean_color[1]], fmt='o', color='g', label='CI G' if i == 0 else "")
                 ax.errorbar(i, mean_color[2], yerr=[mean_color[2] - ci[0, 2], ci[1, 2] - mean_color[2]], fmt='o', color='b', label='CI B' if i == 0 else "")
