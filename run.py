@@ -6,26 +6,45 @@ import matplotlib.pyplot as plt
 import cv2
 import scipy.stats as stats
 
-# Função para mapear cores para arquétipos junguianos
+# Corrigindo o erro de descompactação da cor
 def map_color_to_archetype(color):
+    color = np.round(color).astype(int)  # Garante que os valores da cor sejam inteiros
     r, g, b = color
     if r > 150 and g < 100 and b < 100:
-        return "Herói/Guerreiro - Paixão, Ação, Energia"
+        return "Paixão, Ação, Energia (Vermelho)"
     elif b > 150 and g < 100 and r < 100:
-        return "Sábio/Mãe - Calma, Sabedoria, Proteção"
+        return "Calma, Sabedoria, Proteção (Azul)"
     elif r > 150 and g > 150 and b < 100:
-        return "Rei/Eterno Adolescente - Otimismo, Criatividade, Poder"
+        return "Otimismo, Criatividade, Poder (Amarelo)"
     elif g > 150 and r < 100 and b < 100:
-        return "Curador/Grande Mãe - Crescimento, Cura, Abundância"
+        return "Crescimento, Cura, Abundância (Verde)"
     elif r < 50 and g < 50 and b < 50:
-        return "Sombra/Destruidor - Mistério, Inconsciente, Transformação"
+        return "Mistério, Inconsciente, Transformação (Preto)"
     elif r > 200 and g > 200 and b > 200:
-        return "Inocente/Sábio - Pureza, Clareza, Novos Começos"
+        return "Pureza, Clareza, Novos Começos (Branco)"
     else:
         return "Outros - Interpretar com base em contexto"
 
-# Código principal
-st.markdown("<h1 style='text-align: center;'>Identificação de Cores Dominantes em Pinturas</h1>", unsafe_allow_html=True)
+# Adicionando mapeamento baseado na Psicologia das Cores
+def interpret_color_psychology(color):
+    color = np.round(color).astype(int)
+    r, g, b = color
+    if r > 150 and g < 100 and b < 100:
+        return "Vermelho: Amor, Ódio, Perigo, Dinamismo"
+    elif b > 150 and g < 100 and r < 100:
+        return "Azul: Calma, Harmonia, Fidelidade"
+    elif r > 150 and g > 150 and b < 100:
+        return "Amarelo: Otimismo, Traição, Inteligência"
+    elif g > 150 and r < 100 and b < 100:
+        return "Verde: Fertilidade, Esperança, Saúde"
+    elif r < 50 and g < 50 and b < 50:
+        return "Preto: Poder, Morte, Elegância"
+    elif r > 200 and g > 200 and b > 200:
+        return "Branco: Inocência, Pureza, Bondade"
+    else:
+        return "Cor não identificada. Consulte manualmente."
+
+st.markdown("<h1 style='text-align: center;'>Identificação de Cores Dominantes e Psicologia das Cores</h1>", unsafe_allow_html=True)
 st.markdown("<hr>", unsafe_allow_html=True)
 
 uploaded_files = st.sidebar.file_uploader("Escolha até 10 imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
@@ -77,9 +96,11 @@ if st.sidebar.button("Executar"):
 
             dominant_colors = []
             archetypes = []
+            interpretations = []
             for color, percentage in zip(colors, percentages):
                 dominant_colors.append((color, percentage))
                 archetypes.append(map_color_to_archetype(color))
+                interpretations.append(interpret_color_psychology(color))
 
             fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
             for sp in ax.spines.values():
@@ -103,9 +124,11 @@ if st.sidebar.button("Executar"):
             plt.title("Distribuição das Cores Dominantes")
             st.pyplot(fig)
 
-            st.write("Cores dominantes e seus arquétipos associados:")
+            st.write("Cores dominantes, arquétipos e interpretações psicológicas:")
             for i, (color, percentage) in enumerate(dominant_colors):
-                st.write(f"**Cor {i+1}:** {color} - {percentage:.2%} - **Arquétipo:** {archetypes[i]}")
+                st.write(f"**Cor {i+1}:** {color} - {percentage:.2%}")
+                st.write(f"**Arquétipo:** {archetypes[i]}")
+                st.write(f"**Interpretação Psicológica:** {interpretations[i]}")
 
     else:
         st.error("Por favor, faça o upload de pelo menos uma imagem.")
