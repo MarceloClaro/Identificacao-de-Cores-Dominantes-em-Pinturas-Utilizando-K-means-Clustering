@@ -1,6 +1,7 @@
 import streamlit as st
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
+from sklearn.neural_network import MLPClassifier
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
@@ -15,12 +16,12 @@ st.markdown("<hr>", unsafe_allow_html=True)
 st.sidebar.image("psicologia.jpg", width=200)
 with st.sidebar.expander("Instruções"):
     st.markdown("""
-    Este aplicativo permite identificar as cores dominantes em uma pintura utilizando o algoritmo K-means Clustering e a Análise de Componentes Principais (PCA). Siga as instruções abaixo para usar o aplicativo:
+    Este aplicativo permite identificar as cores dominantes em uma pintura utilizando diferentes técnicas de machine learning. Siga as instruções abaixo para usar o aplicativo:
 
     **Passos:**
     1. Faça o upload de duas imagens utilizando o botão "Browse files".
     2. Escolha o número de clusters para a segmentação de cores utilizando o controle deslizante.
-    3. Escolha se deseja aplicar PCA para redução de dimensionalidade.
+    3. Escolha o modelo para a análise (K-means, PCA, ou Rede Neural).
     4. Clique no botão "Executar" para processar as imagens.
 
     **Inovações:**
@@ -44,8 +45,8 @@ uploaded_files = st.sidebar.file_uploader("Escolha duas imagens...", type=["jpg"
 # Selecionar o número de clusters
 num_clusters = st.sidebar.slider("Número de Clusters", 1, 10, 5)
 
-# Checkbox para aplicar PCA
-apply_pca = st.sidebar.checkbox("Aplicar PCA para redução de dimensionalidade", value=True)
+# Selecionar o método de análise
+model_choice = st.sidebar.selectbox("Escolha o Modelo de Análise", ("K-means", "PCA", "Rede Neural"))
 
 # Botão para executar a análise
 if st.sidebar.button("Executar"):
@@ -62,30 +63,37 @@ if st.sidebar.button("Executar"):
             # Converter a imagem para um array 2D
             pixels = image_small.reshape(-1, 3)
 
-            # Aplicar PCA para redução de dimensionalidade, se selecionado
-            if apply_pca:
+            # Aplicar o modelo selecionado
+            if model_choice == "K-means":
+                model = KMeans(n_clusters=num_clusters, random_state=42)
+                model.fit(pixels)
+                colors = model.cluster_centers_
+            elif model_choice == "PCA":
                 pca = PCA(n_components=2)
-                pixels = pca.fit_transform(pixels)
-
-            # Aplicar K-means clustering para identificar as cores dominantes
-            kmeans = KMeans(n_clusters=num_clusters, random_state=42)
-            kmeans.fit(pixels)
-            colors = kmeans.cluster_centers_
-
-            # Se PCA foi aplicado, reverter a transformação para as cores originais
-            if apply_pca:
+                pixels_pca = pca.fit_transform(pixels)
+                model = KMeans(n_clusters=num_clusters, random_state=42)
+                model.fit(pixels_pca)
+                colors = model.cluster_centers_
                 colors = pca.inverse_transform(colors)
+            elif model_choice == "Rede Neural":
+                # Reduzir para 2D para visualização com PCA antes de usar MLPClassifier
+                pca = PCA(n_components=2)
+                pixels_pca = pca.fit_transform(pixels)
+                model = MLPClassifier(hidden_layer_sizes=(100,), random_state=42, max_iter=500)
+                model.fit(pixels_pca, np.zeros(pixels_pca.shape[0]))  # Usamos zeros como dummy target
+                labels = model.predict(pixels_pca)
+                kmeans = KMeans(n_clusters=num_clusters, random_state=42)
+                kmeans.fit(pixels)
+                colors = kmeans.cluster_centers_
 
-            colors = np.clip(colors, 0, 255)  # Garantir que os valores estão dentro da faixa RGB
-
-            labels = kmeans.labels_
+            # Garantir que os valores estão dentro da faixa RGB
+            colors = np.clip(colors, 0, 255)
+            colors = colors.astype(int)
 
             # Calcular a porcentagem de cada cor
+            labels = model.predict(pixels)
             counts = np.bincount(labels)
             percentages = counts / len(labels)
-
-            # Converter cores para valores inteiros
-            colors = colors.astype(int)
 
             # Mostrar a imagem original
             st.image(image, caption='Imagem Analisada', use_column_width=True)
