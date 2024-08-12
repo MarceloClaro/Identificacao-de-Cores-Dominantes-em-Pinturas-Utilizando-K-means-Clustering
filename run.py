@@ -68,14 +68,26 @@ def calculate_statistics(pixels, labels, cluster_centers):
         })
     return statistics
 
+# Função para verificar se a imagem foi carregada corretamente
+def load_image(uploaded_file):
+    try:
+        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+        image = cv2.imdecode(file_bytes, 1)
+        if image is None:
+            st.error("Não foi possível processar a imagem.")
+            return None
+        return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    except Exception as e:
+        st.error(f"Erro ao processar a imagem: {e}")
+        return None
+
 # Botão para executar a análise
 if st.sidebar.button("Executar"):
-    if len(uploaded_files) >= 1:
+    if uploaded_files:
         for uploaded_file in uploaded_files:
-            # Ler a imagem do upload
-            file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-            image = cv2.imdecode(file_bytes, 1)
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+            image = load_image(uploaded_file)
+            if image is None:
+                continue
 
             # Redimensionar a imagem para acelerar o processamento
             image_small = cv2.resize(image, (100, 100))
@@ -103,9 +115,7 @@ if st.sidebar.button("Executar"):
             st.image(image, caption='Imagem Analisada', use_column_width=True)
 
             # Mostrar as cores dominantes e suas porcentagens
-            dominant_colors = []
-            for color, percentage in zip(colors, percentages):
-                dominant_colors.append((color, percentage))
+            dominant_colors = [(color, percentage) for color, percentage in zip(colors, percentages)]
 
             # Plotar as cores dominantes como uma barra
             fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
@@ -155,4 +165,3 @@ Whatsapp: (88)981587145
 
 Instagram: [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
 """)
-
