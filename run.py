@@ -24,15 +24,10 @@ with st.sidebar.expander("Instruções"):
     **Nota:** Evite usar PCA se a precisão das cores for crucial para a análise.
     """)
 
-# Função para garantir que as cores estejam no formato adequado para o matplotlib
-def validate_color(color):
-    color = np.clip(np.round(color), 0, 255).astype(int)
-    if color.size == 3:
-        return color[0], color[1], color[2]  # Retorna r, g, b
-    elif color.size == 2:
-        return color[0], color[1], 0  # Se tiver apenas 2 valores, adicione um 0 para o azul
-    else:
-        return color[0], 0, 0  # Se tiver apenas 1 valor, use-o para o vermelho e defina verde e azul como 0
+# Função para normalizar as cores para o intervalo [0, 1]
+def normalize_color(color):
+    color = np.clip(color, 0, 255) / 255
+    return tuple(color)
 
 # Função para calcular a distância euclidiana
 def euclidean_distance(c1, c2):
@@ -40,7 +35,7 @@ def euclidean_distance(c1, c2):
 
 # Função para encontrar a cor mais próxima e sua interpretação psicológica
 def interpret_color_psychology(color):
-    r, g, b = validate_color(color)
+    r, g, b = color
     colors_db = [
         {'color': (1, 0, 0), 'name': 'Vermelho', 'interpretation': 'Representa paixão, energia, e agressividade.'},
         {'color': (0, 0, 1), 'name': 'Azul', 'interpretation': 'Simboliza calma, confiança e harmonia.'},
@@ -61,15 +56,14 @@ def interpret_color_psychology(color):
         {'color': (0.4, 0.2, 0.2), 'name': 'Marrom', 'interpretation': 'Simboliza estabilidade, confiabilidade e segurança.'},
         {'color': (0.5, 0.4, 0.4), 'name': 'Bege', 'interpretation': 'Representa simplicidade, confiabilidade e tradição.'},
         {'color': (1, 0.4, 0.7), 'name': 'Rosa', 'interpretation': 'Representa carinho, afeto e vulnerabilidade.'},
-        {'color': (0.6, 0.4, 0.2), 'name': 'Sépia', 'interpretation': 'Evoke nostalgia and antiquity.'},
-        {'color': (0.4, 0.2, 0.6), 'name': 'Lavanda', 'interpretation': 'Represents serenity, grace, and elegance.'},
-        {'color': (0.3, 0.3, 0.7), 'name': 'Índigo', 'interpretation': 'Associated with deep thoughts and spirituality.'},
-        {'color': (0.3, 0.6, 0.3), 'name': 'Verde-musgo', 'interpretation': 'Represents resilience, endurance, and balance.'},
+        {'color': (0.6, 0.4, 0.2), 'name': 'Sépia', 'interpretation': 'Evoca nostalgia e antiguidade.'},
+        {'color': (0.4, 0.2, 0.6), 'name': 'Lavanda', 'interpretation': 'Representa serenidade, graça e elegância.'},
+        {'color': (0.3, 0.3, 0.7), 'name': 'Índigo', 'interpretation': 'Associado a pensamentos profundos e espiritualidade.'},
+        {'color': (0.3, 0.6, 0.3), 'name': 'Verde-musgo', 'interpretation': 'Representa resiliência, endurance e equilíbrio.'},
     ]
     
     closest_color = min(colors_db, key=lambda c: euclidean_distance((r, g, b), c['color']))
     return closest_color  # Retorna o dicionário inteiro
-
 
 # Configuração do streamlit
 uploaded_files = st.sidebar.file_uploader("Escolha até 10 imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
@@ -116,37 +110,43 @@ if st.sidebar.button("Executar"):
             percentages = counts / len(labels)
 
             statistics = calculate_statistics(pixels, labels, colors)
-            colors = colors.astype(int)
+            
+            # Se PCA foi aplicado, as cores precisam ser transformadas de volta
+            if apply_pca:
+                colors_rgb = pca.inverse_transform(colors)
+            else:
+                colors_rgb = colors
+
+            colors_rgb = np.clip(np.round(colors_rgb), 0, 255).astype(int)
+            colors_normalized = [normalize_color(color) for color in colors_rgb]
 
             st.image(image, caption='Imagem Analisada', use_column_width=True)
 
             dominant_colors = []
             interpretations = []
-            for color, percentage in zip(colors, percentages):
-                color = validate_color(color)
+            for color, percentage in zip(colors_normalized, percentages):
                 dominant_colors.append((color, percentage))
                 closest_color_info = interpret_color_psychology(color)
                 interpretations.append(closest_color_info)
 
             # Visualização das cores dominantes
-            fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
-            bar_width = 1
-            index = np.arange(len(colors))
-            ax.bar(index, [1] * len(colors), color=[validate_color(color) for color in colors], width=bar_width)
-            ax.set_xticks(index)
-            ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
+            fig, ax = plt.subplots(1, 1, figsize=(8, 2))
+            bar_width = 0.9
+            for i, (color, percentage) in enumerate(dominant_colors):
+                ax.bar(i, 1, color=color, width=bar_width)
+            ax.set_xticks(range(len(dominant_colors)))
+            ax.set_xticklabels([f'Cor {i+1}' for i in range(len(dominant_colors))])
+            ax.set_yticks([])
             plt.title("Cores Dominantes")
             st.pyplot(fig)
 
             # Gráfico de pizza das cores dominantes
             fig, ax = plt.subplots(figsize=(8, 8))
             wedges, texts, autotexts = ax.pie(percentages, labels=[f'{int(p*100)}%' for p in percentages],
-                                              colors=[validate_color(color) for color in colors],
-                                              autopct='%1.1f%%', startangle=140)
-            for text in texts:
-                text.set_color('grey')
-            for autotext in autotexts:
-                autotext.set_color('white')
+                                              colors=colors_normalized,
+                                              autopct='%1.1f%%', startangle=140, textprops={'color':"w"})
+            centre_circle = plt.Circle((0,0),0.70,fc='white')
+            fig.gca().add_artist(centre_circle)
             plt.title("Distribuição das Cores Dominantes")
             st.pyplot(fig)
 
@@ -154,7 +154,8 @@ if st.sidebar.button("Executar"):
             st.write("**Cores dominantes e interpretações psicológicas:**")
             for i, (color, percentage) in enumerate(dominant_colors):
                 color_info = interpretations[i]
-                st.write(f"**Cor {i+1}:** {color_info['name']} ({color}) - {percentage:.2%}")
+                r, g, b = [int(c*255) for c in color]
+                st.write(f"**Cor {i+1}:** {color_info['name']} (RGB: {r}, {g}, {b}) - {percentage:.2%}")
                 st.write(f"**Interpretação Psicológica:** {color_info['interpretation']}")
                 st.markdown("<hr>", unsafe_allow_html=True)
 
