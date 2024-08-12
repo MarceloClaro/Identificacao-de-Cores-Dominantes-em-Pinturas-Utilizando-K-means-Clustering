@@ -35,10 +35,14 @@ def apply_pca(pixels, n_components=2):
 
 # Função para plotar as cores dominantes
 def plot_dominant_colors(colors, percentages, title="Cores Dominantes"):
-    fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
-    ax.imshow([colors], aspect='auto')
-    plt.title(title)
-    st.pyplot(fig)
+    # Verificar se o formato do array de cores é correto
+    if colors.ndim == 2 and colors.shape[1] == 3:
+        fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
+        ax.imshow([colors], aspect='auto')
+        plt.title(title)
+        st.pyplot(fig)
+    else:
+        st.error("Formato de dados inválido para a exibição de cores dominantes.")
 
 # Função para criar um gráfico de pizza das cores dominantes
 def plot_pie_chart(colors, percentages):
