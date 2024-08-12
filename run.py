@@ -1,125 +1,132 @@
 import streamlit as st
 from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
 import numpy as np
 import matplotlib.pyplot as plt
-from PIL import Image
-import io
-
-# Configurações da página
-st.set_page_config(
-    page_title="Identificação de Cores Dominantes em Pinturas",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
+import cv2
 
 # Título e descrição
-st.markdown("<h1 style='text-align: center; color: #4B0082;'>Identificação de Cores Dominantes em Pinturas</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>Identificação de Cores Dominantes em Pinturas</h1>", unsafe_allow_html=True)
 st.markdown("<hr>", unsafe_allow_html=True)
-st.write("<div style='text-align: center; font-style: italic;'>\"Conheça todas as teorias, domine todas as técnicas, mas ao tocar uma alma humana, seja apenas outra alma humana.\" - C.G. Jung</div>", unsafe_allow_html=True)
+st.write("𝐂𝐨𝐧𝐡𝐞𝐜̧𝐚 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞𝐨𝐫𝐢𝐚𝐬, 𝐝𝐨𝐦𝐢𝐧𝐞 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞́𝐜𝐧𝐢𝐜𝐚𝐬, 𝐦𝐚𝐬 𝐚𝐨 𝐭𝐨𝐜𝐚𝐫 𝐮𝐦𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚, 𝐬𝐞𝐣𝐚 𝐚𝐩𝐞𝐧𝐚𝐬 𝐨𝐮𝐭𝐫𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚 (𝐂.𝐆. 𝐉𝐮𝐧𝐠)")
 st.markdown("<hr>", unsafe_allow_html=True)
 
 # Instruções na barra lateral
-st.sidebar.image("psicologia.jpg", width=250)
-with st.sidebar.expander("🛈 Instruções", expanded=True):
+st.sidebar.image("psicologia.jpg", width=200)
+with st.sidebar.expander("Instruções"):
     st.markdown("""
-    Este aplicativo permite identificar as cores dominantes em pinturas utilizando o algoritmo K-Means Clustering.
+    Este aplicativo permite identificar as cores dominantes em uma pintura utilizando os algoritmos K-means Clustering e PCA. Siga as instruções abaixo para usar o aplicativo:
 
-    **Passos para Utilização:**
-    1. **Upload das Imagens:** Faça o upload de até **duas** imagens nos formatos JPG, JPEG ou PNG.
-    2. **Configuração dos Clusters:** Selecione o número de clusters (entre 1 e 10) para determinar a quantidade de cores dominantes a serem identificadas.
-    3. **Processamento:** Clique no botão **"Analisar Imagens"** para iniciar o processamento.
-    
-    **Resultados Fornecidos:**
-    - Visualização da imagem original.
-    - Barra com as cores dominantes identificadas.
-    - Gráfico de pizza mostrando a porcentagem de cada cor dominante.
-    - Detalhamento textual das cores em formato hexadecimal e suas respectivas porcentagens.
+    **Passos:**
+    1. Faça o upload de duas imagens utilizando o botão "Browse files".
+    2. Escolha o número de clusters e componentes principais para a segmentação de cores utilizando os controles deslizantes.
+    3. Clique no botão "Executar" para processar as imagens.
 
-    **Observações:**
-    - Imagens de alta resolução podem demandar maior tempo de processamento.
-    - Para melhores resultados, utilize imagens com boa iluminação e contraste.
+    **Detalhes Técnicos:**
+    - **Upload da Imagem:** O aplicativo aceita imagens nos formatos JPG, JPEG e PNG.
+    - **Número de Clusters e Componentes Principais:** Você pode selecionar entre 1 e 10 clusters para identificar diferentes cores dominantes na imagem e entre 1 e 3 componentes principais para simplificação da imagem usando PCA.
+    - **Resultados:** O aplicativo exibirá uma barra com as cores dominantes e um gráfico de pizza mostrando a distribuição percentual de cada cor para cada imagem.
+
+    **Inovações:**
+    - Utilização de técnicas de ciência de dados para análise de imagens.
+    - Interface interativa que permite personalização pelo usuário.
+
+    **Pontos Positivos:**
+    - Fácil de usar e intuitivo, mesmo para usuários sem experiência prévia em processamento de imagens.
+    - Resultados visuais claros e informativos.
+
+    **Limitações:**
+    - O tempo de processamento pode variar dependendo do tamanho da imagem.
+    - A precisão da segmentação pode ser afetada por imagens com muitas cores semelhantes.
+
+    **Importância de Ter Instruções:**
+    - As instruções claras garantem que o aplicativo possa ser utilizado eficientemente por qualquer pessoa, independentemente do seu nível de conhecimento técnico.
+
+    Em resumo, este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
     """)
-    
-# Upload das imagens pelo usuário
-uploaded_files = st.sidebar.file_uploader("📁 Faça o upload de até duas imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True, help="Você pode arrastar e soltar as imagens ou clicar para selecionar os arquivos.")
 
-# Selecionar o número de clusters
-num_clusters = st.sidebar.slider("🎨 Selecione o Número de Clusters", 1, 10, 5, help="Determina quantas cores dominantes serão identificadas em cada imagem.")
+# Upload das imagens pelo usuário
+uploaded_files = st.sidebar.file_uploader("Escolha duas imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
+
+# Selecionar o número de clusters e componentes principais
+num_clusters = st.sidebar.slider("Número de Clusters", 1, 10, 5)
+num_components = st.sidebar.slider("Número de Componentes Principais (PCA)", 1, 3, 3)
 
 # Botão para executar a análise
-if st.sidebar.button("🖼️ Analisar Imagens"):
-    if uploaded_files:
-        for idx, uploaded_file in enumerate(uploaded_files):
-            st.markdown(f"### Análise da Imagem {idx+1}")
-            try:
-                # Ler a imagem usando PIL
-                image = Image.open(uploaded_file)
-                st.image(image, caption='Imagem Original', use_column_width=True)
+if st.sidebar.button("Executar"):
+    if len(uploaded_files) == 2:
+        for uploaded_file in uploaded_files:
+            # Ler a imagem do upload
+            file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+            image = cv2.imdecode(file_bytes, 1)
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-                # Converter a imagem para RGB e redimensionar para acelerar o processamento
-                image = image.convert('RGB')
-                resized_image = image.resize((250, 250))
-                img_array = np.array(resized_image)
-                img_flat = img_array.reshape((-1, 3))
+            # Redimensionar a imagem para acelerar o processamento
+            image_small = cv2.resize(image, (100, 100))
 
-                # Aplicar K-Means
-                kmeans = KMeans(n_clusters=num_clusters, random_state=42)
-                kmeans.fit(img_flat)
-                colors = kmeans.cluster_centers_
-                labels = kmeans.labels_
+            # Converter a imagem para um array 2D
+            pixels = image_small.reshape(-1, 3)
 
-                # Calcular a porcentagem de cada cor
-                counts = np.bincount(labels)
-                percentages = counts / len(labels)
+            # Aplicar PCA para redução de dimensionalidade
+            pca = PCA(n_components=num_components)
+            pca_pixels = pca.fit_transform(pixels)
 
-                # Ordenar as cores por porcentagem decrescente
-                sorted_idx = np.argsort(-percentages)
-                colors = colors[sorted_idx]
-                percentages = percentages[sorted_idx]
+            # Aplicar K-means clustering para identificar as cores dominantes
+            kmeans = KMeans(n_clusters=num_clusters, random_state=42)
+            kmeans.fit(pca_pixels)
+            colors = pca.inverse_transform(kmeans.cluster_centers_)
+            labels = kmeans.labels_
 
-                # Exibir a barra de cores dominantes
-                st.markdown("#### Cores Dominantes")
-                fig, ax = plt.subplots(figsize=(12, 2))
-                for i, (color, percentage) in enumerate(zip(colors, percentages)):
-                    ax.barh(0, percentage, left=sum(percentages[:i]), color=tuple(color/255), edgecolor='white')
-                ax.set_xticks([])
-                ax.set_yticks([])
-                ax.set_xlim(0, 1)
-                st.pyplot(fig)
+            # Calcular a porcentagem de cada cor
+            counts = np.bincount(labels)
+            percentages = counts / len(labels)
 
-                # Exibir gráfico de pizza
-                st.markdown("#### Distribuição das Cores Dominantes")
-                fig1, ax1 = plt.subplots()
-                hex_colors = ['#{:02x}{:02x}{:02x}'.format(int(c[0]), int(c[1]), int(c[2])) for c in colors]
-                ax1.pie(percentages, labels=hex_colors, autopct='%1.1f%%', colors=hex_colors, startangle=140, textprops={'color':"w"})
-                centre_circle = plt.Circle((0,0),0.70,fc='black')
-                fig1.gca().add_artist(centre_circle)
-                ax1.axis('equal')  
-                st.pyplot(fig1)
+            # Converter cores para valores inteiros
+            colors = colors.astype(int)
 
-                # Detalhamento textual das cores
-                st.markdown("#### Detalhes das Cores Dominantes")
-                color_details = ""
-                for i, (color, percentage) in enumerate(zip(colors, percentages)):
-                    hex_color = '#{:02x}{:02x}{:02x}'.format(int(color[0]), int(color[1]), int(color[2]))
-                    color_details += f"- **Cor {i+1}:** `{hex_color}` | **Porcentagem:** {percentage*100:.2f}%\n"
-                st.markdown(color_details)
+            # Mostrar a imagem original
+            st.image(image, caption='Imagem Analisada', use_column_width=True)
 
-            except Exception as e:
-                st.error(f"Ocorreu um erro ao processar a imagem: {e}")
+            # Mostrar as cores dominantes e suas porcentagens
+            dominant_colors = []
+            for color, percentage in zip(colors, percentages):
+                dominant_colors.append((color, percentage))
+
+            # Plotar as cores dominantes como uma barra
+            fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
+            for sp in ax.spines.values():
+                sp.set_visible(False)
+            ax.imshow([colors], aspect='auto')
+            plt.title("Cores Dominantes")
+            st.pyplot(fig)
+
+            # Plotar gráfico de pizza das cores dominantes
+            fig, ax = plt.subplots(figsize=(8, 8))
+            wedges, texts, autotexts = ax.pie(percentages, labels=[f'{int(p*100)}%' for p in percentages],
+                                              colors=[f'#{r:02x}{g:02x}{b:02x}' for r, g, b in colors],
+                                              autopct='%1.1f%%', startangle=140)
+            for text in texts:
+                text.set_color('grey')
+            for autotext in autotexts:
+                autotext.set_color('white')
+            plt.title("Distribuição das Cores Dominantes")
+            st.pyplot(fig)
+
+            # Exibir as cores dominantes e suas porcentagens
+            st.write("Cores dominantes e suas porcentagens:")
+            for color, percentage in dominant_colors:
+                st.write(f"Cor: {color}, Porcentagem: {percentage:.2%}")
     else:
-        st.error("Por favor, faça o upload de pelo menos uma imagem.")
+        st.error("Por favor, faça o upload de duas imagens.")
 
-# Informações adicionais no rodapé
-st.markdown("<hr>", unsafe_allow_html=True)
-col1, col2 = st.columns([1, 3])
-with col1:
-    st.image("logo.png", width=100)
-with col2:
-    st.markdown("""
-    **Projeto Arteterapia**
-    - **Professores:** Marcelo Claro (Coorientador)
-    - **Graduanda:** Nadielle Darc Batista Dias
-    - **Contato:** [WhatsApp](https://wa.me/5588981587145)
-    - **Instagram:** [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
-    """)
+# Informações adicionais na barra lateral
+st.sidebar.image("logo.png", width=80)
+st.sidebar.write("""
+Projeto Arteterapia 
+- Professores: Marcelo Claro (Coorientador).
+
+Graduanda: Nadielle Darc Batista Dias
+Whatsapp: (88)981587145
+
+Instagram: [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
+""")
