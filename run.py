@@ -6,6 +6,58 @@ import matplotlib.pyplot as plt
 import cv2
 import scipy.stats as stats
 
+# Título e descrição
+st.markdown("<h1 style='text-align: center;'>Identificação de Cores Dominantes em Pinturas</h1>", unsafe_allow_html=True)
+st.markdown("<hr>", unsafe_allow_html=True)
+st.write("𝐂𝐨𝐧𝐡𝐞𝐜̧𝐚 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞𝐨𝐫𝐢𝐚𝐬, 𝐝𝐨𝐦𝐢𝐧𝐞 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞́𝐜𝐧𝐢𝐜𝐚𝐬, 𝐦𝐚𝐬 𝐚𝐨 𝐭𝐨𝐜𝐚𝐫 𝐮𝐦𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚, 𝐬𝐞𝐣𝐚 𝐚𝐩𝐞𝐧𝐚𝐬 𝐨𝐮𝐭𝐫𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚 (𝐂.𝐆. 𝐉𝐮𝐧𝐠)")
+st.markdown("<hr>", unsafe_allow_html=True)
+
+# Instruções na barra lateral
+st.sidebar.image("psicologia.jpg", width=200)
+with st.sidebar.expander("Instruções"):
+    st.markdown("""
+    Este aplicativo permite identificar as cores dominantes em uma pintura utilizando o algoritmo K-means Clustering. Siga as instruções abaixo para usar o aplicativo:
+
+    **Passos:**
+    1. Faça o upload de duas imagens utilizando o botão "Browse files".
+    2. Escolha o número de clusters para a segmentação de cores utilizando o controle deslizante.
+    3. Clique no botão "Executar" para processar as imagens.
+
+    **Detalhes Técnicos:**
+    - **Upload da Imagem:** O aplicativo aceita imagens nos formatos JPG, JPEG e PNG.
+    - **Número de Clusters:** Você pode selecionar entre 1 e 10 clusters para identificar diferentes cores dominantes na imagem.
+    - **Resultados:** O aplicativo exibirá uma barra com as cores dominantes e um gráfico de pizza mostrando a distribuição percentual de cada cor para cada imagem.
+
+    **Inovações:**
+    - Utilização de técnicas de ciência de dados para análise de imagens.
+    - Interface interativa que permite personalização pelo usuário.
+
+    **Pontos Positivos:**
+    - Fácil de usar e intuitivo, mesmo para usuários sem experiência prévia em processamento de imagens.
+    - Resultados visuais claros e informativos.
+
+    **Limitações:**
+    - O tempo de processamento pode variar dependendo do tamanho da imagem.
+    - A precisão da segmentação pode ser afetada por imagens com muitas cores semelhantes.
+
+    **Importância de Ter Instruções:**
+    - As instruções claras garantem que o aplicativo possa ser utilizado eficientemente por qualquer pessoa, independentemente do seu nível de conhecimento técnico.
+
+    Em resumo, este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
+    """)
+
+# Informações adicionais na barra lateral
+st.sidebar.image("logo.png", width=80)
+st.sidebar.write("""
+Projeto Arteterapia 
+- Professores: Marcelo Claro (Coorientador).
+
+Graduanda: Nadielle Darc Batista Dias
+Whatsapp: (88)981587145
+
+Instagram: [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
+""")
+
 # Função para garantir que as cores estejam no formato adequado para o matplotlib
 def validate_color(color):
     color = np.round(color).astype(int)
