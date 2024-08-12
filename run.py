@@ -51,10 +51,20 @@ def interpret_color_psychology(color):
         {'color': (0.7, 0.2, 0.2), 'name': 'Carmesim', 'interpretation': 'Representa paixão, intensidade e força.'},
         {'color': (0.6, 0.5, 0.8), 'name': 'Violeta', 'interpretation': 'Associado à intuição, inovação, e misticismo.'},
         {'color': (0.7, 0.7, 0.7), 'name': 'Prata', 'interpretation': 'Conectado à pureza, precisão, e integridade.'},
+        {'color': (0.8, 0.4, 0), 'name': 'Âmbar', 'interpretation': 'Simboliza calor, segurança e aconchego.'},
+        {'color': (0.2, 0.8, 0.2), 'name': 'Verde-oliva', 'interpretation': 'Representa paz, diplomacia e harmonia.'},
+        {'color': (0.4, 0.2, 0.2), 'name': 'Marrom', 'interpretation': 'Simboliza estabilidade, confiabilidade e segurança.'},
+        {'color': (0.5, 0.4, 0.4), 'name': 'Bege', 'interpretation': 'Representa simplicidade, confiabilidade e tradição.'},
+        {'color': (1, 0.4, 0.7), 'name': 'Rosa', 'interpretation': 'Representa carinho, afeto e vulnerabilidade.'},
+        {'color': (0.6, 0.4, 0.2), 'name': 'Sépia', 'interpretation': 'Evoke nostalgia and antiquity.'},
+        {'color': (0.4, 0.2, 0.6), 'name': 'Lavanda', 'interpretation': 'Represents serenity, grace, and elegance.'},
+        {'color': (0.3, 0.3, 0.7), 'name': 'Índigo', 'interpretation': 'Associated with deep thoughts and spirituality.'},
+        {'color': (0.3, 0.6, 0.3), 'name': 'Verde-musgo', 'interpretation': 'Represents resilience, endurance, and balance.'},
     ]
     
     closest_color = min(colors_db, key=lambda c: euclidean_distance(color, c['color']))
     return closest_color  # Retorna o dicionário inteiro
+
 
 # Configuração do streamlit
 uploaded_files = st.sidebar.file_uploader("Escolha até 10 imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
