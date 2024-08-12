@@ -51,17 +51,10 @@ def interpret_color_psychology(color):
         {'color': (0.7, 0.2, 0.2), 'name': 'Carmesim', 'interpretation': 'Representa paixão, intensidade e força.'},
         {'color': (0.6, 0.5, 0.8), 'name': 'Violeta', 'interpretation': 'Associado à intuição, inovação, e misticismo.'},
         {'color': (0.7, 0.7, 0.7), 'name': 'Prata', 'interpretation': 'Conectado à pureza, precisão, e integridade.'},
-        {'color': (0.8, 0.4, 0), 'name': 'Âmbar', 'interpretation': 'Simboliza calor, segurança e aconchego.'},  # Nova cor
-        {'color': (0.2, 0.8, 0.2), 'name': 'Verde-oliva', 'interpretation': 'Representa paz, diplomacia e harmonia.'},  # Nova cor
-        {'color': (0.4, 0.2, 0.2), 'name': 'Marrom', 'interpretation': 'Simboliza estabilidade, confiabilidade e segurança.'},  # Nova cor
-        {'color': (0.5, 0.4, 0.4), 'name': 'Bege', 'interpretation': 'Representa simplicidade, confiabilidade e tradição.'},  # Nova cor
-        {'color': (1, 0.4, 0.7), 'name': 'Rosa', 'interpretation': 'Representa carinho, afeto e vulnerabilidade.'}  # Nova cor
     ]
     
-
-    
     closest_color = min(colors_db, key=lambda c: euclidean_distance(color, c['color']))
-    return closest_color['interpretation']
+    return closest_color  # Retorna o dicionário inteiro
 
 # Configuração do streamlit
 uploaded_files = st.sidebar.file_uploader("Escolha até 10 imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
@@ -117,7 +110,8 @@ if st.sidebar.button("Executar"):
             for color, percentage in zip(colors, percentages):
                 color = validate_color(color)
                 dominant_colors.append((color, percentage))
-                interpretations.append(interpret_color_psychology(color))
+                closest_color_info = interpret_color_psychology(color)
+                interpretations.append(closest_color_info)
 
             # Visualização das cores dominantes
             fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
@@ -129,7 +123,7 @@ if st.sidebar.button("Executar"):
             plt.title("Cores Dominantes")
             st.pyplot(fig)
 
-                        # Gráfico de pizza das cores dominantes (continuação)
+            # Gráfico de pizza das cores dominantes (continuação)
             fig, ax = plt.subplots(figsize=(8, 8))
             wedges, texts, autotexts = ax.pie(percentages, labels=[f'{int(p*100)}%' for p in percentages],
                                               colors=[validate_color(color) for color in colors],
@@ -144,8 +138,9 @@ if st.sidebar.button("Executar"):
             # Exibir cores dominantes e suas interpretações psicológicas
             st.write("**Cores dominantes e interpretações psicológicas:**")
             for i, (color, percentage) in enumerate(dominant_colors):
-                st.write(f"**Cor {i+1}:** {color} - {percentage:.2%}")
-                st.write(f"**Interpretação Psicológica:** {interpretations[i]}")
+                color_info = interpretations[i]
+                st.write(f"**Cor {i+1}:** {color_info['name']} ({color}) - {percentage:.2%}")
+                st.write(f"**Interpretação Psicológica:** {color_info['interpretation']}")
                 st.write("<hr>", unsafe_allow_html=True)
 
     else:
