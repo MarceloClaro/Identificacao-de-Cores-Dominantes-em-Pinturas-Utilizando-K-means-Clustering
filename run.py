@@ -83,90 +83,75 @@ def validate_color(color):
 def interpret_color_psychology(color):
     r, g, b = validate_color(color)
 
-    # Interpretação das cores com base na psicologia das cores e arquétipos junguianos
+    # Interpretação das cores com base na psicologia das cores e arquétipos
     if r > 0.59 and g < 0.39 and b < 0.39:
-        return ("Vermelho: Associado ao arquétipo do Guerreiro ou Herói, o vermelho representa paixão, "
-                "energia, agressividade, mas também vitalidade e força. É a cor do amor intenso e do ódio, "
-                "da coragem e da guerra. Para o psicólogo, observar o uso frequente do vermelho pode indicar "
-                "conflitos internos, um estado de alerta constante ou uma expressão de poder e domínio. É relevante "
-                "monitorar essa cor em pacientes que lidam com raiva ou impulsos agressivos. [Heller, 2000; Jung, 1959; "
-                "Yoon & Chun, 2022 - https://typeset.io/papers/an-autobiographical-study-on-the-color-psychology-of-art-2wlwfd5v]")
+        return "Vermelho: Representa paixão, energia, e agressividade."
     elif b > 0.59 and g < 0.39 and r < 0.39:
-        return ("Azul: Relacionado ao arquétipo do Sábio ou Mentor, o azul simboliza calma, confiança, "
-                "e harmonia. É a cor da sabedoria, do conhecimento profundo, e da introspecção, conectando-se "
-                "com a serenidade e a eternidade. Para o psicólogo, a predominância do azul pode sugerir um estado "
-                "de tranquilidade ou um desejo de introspecção. Também pode indicar repressão emocional em casos "
-                "onde o azul é usado de forma excessiva. [Heller, 2000; Jung, 1959; McDonald, 2020 - "
-                "https://typeset.io/papers/jungian-archetypes-a-step-towards-scientific-enquiry-14yljcno47]")
+        return "Azul: Simboliza calma, confiança e harmonia."
     elif r > 0.59 and g > 0.59 and b < 0.39:
-        return ("Amarelo: Ligado ao arquétipo do Criador, o amarelo representa a criatividade, o intelecto e a "
-                "alegria. É uma cor de otimismo, mas também pode sugerir ciúme e traição. Está associado ao ouro, "
-                "à riqueza de ideias e ao brilho da inteligência. Em arteterapia, o amarelo pode ser um indicativo "
-                "de busca por reconhecimento ou validação intelectual. Contudo, em excesso, pode apontar para inseguranças "
-                "e ansiedade. [Heller, 2000; Jung, 1959; Potash, 2015 - https://typeset.io/papers/archetypal-aesthetics-viewing-art-through-states-of-586grld0zu]")
+        return "Amarelo: Ligado à criatividade, intelecto e alegria."
     elif g > 0.59 and r < 0.39 and b < 0.39:
-        return ("Verde: Este é o arquétipo do Cuidador ou Mãe, que evoca a fertilidade, esperança e saúde. "
-                "O verde é a cor da natureza, do crescimento e da estabilidade. Está relacionado ao conforto e à "
-                "proteção, mas também à inveja e ao veneno. Para o psicólogo, o verde pode simbolizar a necessidade "
-                "de segurança emocional ou uma conexão profunda com a natureza. No entanto, a escolha frequente desta cor "
-                "pode também refletir ciúmes ou ressentimentos ocultos. [Heller, 2000; Jung, 1959; Yoon & Chun, 2022 - "
-                "https://typeset.io/papers/an-autobiographical-study-on-the-color-psychology-of-art-2wlwfd5v]")
+        return "Verde: Associado à natureza, crescimento e estabilidade."
     elif r < 0.2 and g < 0.2 and b < 0.2:
-        return ("Preto: Representando o arquétipo da Sombra, o preto é a cor do poder, da morte e do mistério. "
-                "Embora também esteja associado à elegância e à sofisticação, é a cor que esconde, que absorve a luz, "
-                "e pode simbolizar o desconhecido e o inconsciente. Em termos terapêuticos, o preto pode ser um indicativo "
-                "de luto, depressão ou uma jornada em direção ao autoconhecimento. É crucial para o psicólogo monitorar "
-                "o uso de preto, pois pode revelar medos profundos ou resistência ao tratamento. [Heller, 2000; Jung, 1959; "
-                "McDonald, 2020 - https://typeset.io/papers/jungian-archetypes-a-step-towards-scientific-enquiry-14yljcno47]")
+        return "Preto: Representa poder, mistério, e morte."
     elif r > 0.78 and g > 0.78 and b > 0.78:
-        return ("Branco: Conectado ao arquétipo do Inocente ou Anjo, o branco simboliza a pureza, a inocência e a "
-                "bondade. É a cor da luz, da paz, da renovação espiritual e da verdade absoluta. Também pode representar "
-                "a esterilidade ou vazio emocional. O branco pode ser utilizado para indicar um desejo de renascimento ou "
-                "purificação, mas em excesso pode sugerir negação emocional ou a busca de uma perfeição inatingível. [Heller, 2000; "
-                "Jung, 1959; Potash, 2015 - https://typeset.io/papers/archetypal-aesthetics-viewing-art-through-states-of-586grld0zu]")
+        return "Branco: Simboliza pureza, inocência, e renovação."
     elif r > 0.5 and g < 0.4 and b > 0.4:
-        return ("Roxo: Associado ao arquétipo do Mago ou Alquimista, o roxo combina a sabedoria do azul com a paixão "
-                "do vermelho. É a cor da transformação, da espiritualidade profunda, do mistério e da magia. Também está "
-                "ligada ao poder e à realeza. Em arteterapia, o roxo pode ser visto como um sinal de busca por transformação "
-                "ou crescimento espiritual. No entanto, pode também indicar uma luta interna entre o desejo por controle e "
-                "a necessidade de libertação. [Heller, 2000; Jung, 1959; Yoon & Chun, 2022 - https://typeset.io/papers/an-autobiographical-study-on-the-color-psychology-of-art-2wlwfd5v]")
+        return "Roxo: Ligado à espiritualidade, transformação e mistério."
     elif r > 0.5 and g < 0.4 and b < 0.39:
-        return ("Laranja: Ligado ao arquétipo do Explorador ou Artista, o laranja representa a energia criativa, a aventura "
-                "e o entusiasmo. É uma cor de movimento, vitalidade e diversão, mas também pode ser percebida como "
-                "extravagante ou excessiva. A utilização do laranja pode indicar um estado de excitação ou a busca por novas "
-                "experiências. Psicologicamente, também pode apontar para um desejo de se destacar ou ser notado. [Heller, 2000; "
-                "Jung, 1959; McDonald, 2020 - https://typeset.io/papers/jungian-archetypes-a-step-towards-scientific-enquiry-14yljcno47]")
+        return "Laranja: Representa energia, criatividade, e entusiasmo."
     elif r < 0.5 and g > 0.5 and b < 0.5:
-        return ("Cinza: Associado ao arquétipo do Oráculo ou Sábio, o cinza representa neutralidade, sabedoria e maturidade. "
-                "É a cor da introspecção, do equilíbrio e da ponderação, mas também pode ser vista como sem vida ou sem emoção. "
-                "Em arteterapia, o cinza pode refletir um estado de equilíbrio ou uma tentativa de se distanciar emocionalmente "
-                "dos eventos da vida. Monitorar essa cor pode ser crucial para identificar sentimentos de apatia ou distanciamento. "
-                "[Heller, 2000; Jung, 1959; Potash, 2015 - https://typeset.io/papers/archetypal-aesthetics-viewing-art-through-states-of-586grld0zu]")
+        return "Cinza: Simboliza neutralidade, sabedoria e maturidade."
     elif r > 0.6 and g < 0.4 and b > 0.4:
-        return ("Rosa: Relacionado ao arquétipo do Amante, o rosa é a cor do carinho, do afeto e da ternura. "
-                "Simboliza o amor romântico e a compaixão, mas também pode sugerir superficialidade ou imaturidade. "
-                "O rosa pode ser uma expressão de vulnerabilidade ou um desejo de carinho e aceitação. Psicologicamente, é "
-                "importante observar se o uso desta cor está associado a um comportamento infantilizado ou a uma busca por "
-                "atenção e proteção. [Heller, 2000; Jung, 1959; Yoon & Chun, 2022 - https://typeset.io/papers/an-autobiographical-study-on-the-color-psychology-of-art-2wlwfd5v]")
+        return "Rosa: Representa carinho, afeto e vulnerabilidade."
     elif r > 0.4 and g < 0.4 and b > 0.6:
-        return ("Violeta: Ligado ao arquétipo do Visionário, o violeta representa a espiritualidade elevada, a intuição e a inovação. "
-                "É a cor do misticismo e da inspiração criativa, evocando o desconhecido e o transcendente. A presença do violeta "
-                "pode indicar uma conexão com aspectos espirituais ou uma busca por compreensão além do físico. Pode também refletir "
-                "uma personalidade introvertida e reflexiva, que valoriza o pensamento profundo. [Heller, 2000; Jung, 1959; Potash, 2015 - "
-                "https://typeset.io/papers/archetypal-aesthetics-viewing-art-through-states-of-586grld0zu]")
+        return "Violeta: Associado à intuição, inovação, e misticismo."
     elif r > 0.7 and g > 0.5 and b > 0.2:
-        return ("Dourado: Associado ao arquétipo do Rei ou Governante, o dourado simboliza poder, riqueza, e iluminação. "
-                "É a cor do sucesso e da majestade, refletindo prestígio e grandeza, mas também pode ser associada à arrogância. "
-                "Em contextos terapêuticos, o dourado pode simbolizar a busca por status ou a necessidade de controle sobre o ambiente. "
-                "Psicologicamente, também pode indicar um desejo de reconhecimento e afirmação social. [Heller, 2000; Jung, 1959; "
-                "McDonald, 2020 - https://typeset.io/papers/jungian-archetypes-a-step-towards-scientific-enquiry-14yljcno47]")
+        return "Dourado: Simboliza poder, riqueza e iluminação."
     elif r > 0.7 and g > 0.7 and b > 0.7:
-        return ("Prata: Conectado ao arquétipo do Curador, o prata representa pureza, precisão, e integridade. "
-                "É a cor da reflexão, da clareza e da feminilidade, relacionada à lua e às marés. Em arteterapia, o prata pode "
-                "indicar um processo de cura emocional ou uma busca por clareza mental. Também pode simbolizar uma forte conexão "
-                "com a intuição e os ciclos naturais. [Heller, 2000; Jung, 1959; Potash, 2015 - https://typeset.io/papers/archetypal-aesthetics-viewing-art-through-states-of-586grld0zu]")
-    else:
-        return "Cor não identificada. Consulte manualmente."
+        return "Prata: Conectado à pureza, precisão, e integridade."
+    elif r > 0.5 and g < 0.39 and b > 0.59:
+        return "Turquesa: Representa equilíbrio emocional e tranquilidade."
+    elif r < 0.39 and g > 0.59 and b > 0.39:
+        return "Verde-azulado: Ligado à calma, sofisticação e introspecção."
+    elif r > 0.59 and g > 0.59 and b < 0.2:
+        return "Âmbar: Simboliza calor, segurança e aconchego."
+    elif r > 0.5 and g > 0.4 and b < 0.39:
+        return "Bege: Representa simplicidade, confiabilidade e tradição."
+    elif r > 0.5 and g < 0.4 and b < 0.2:
+        return "Bordô: Associado à sofisticação, poder e controle."
+    elif r < 0.4 and g > 0.5 and b < 0.39:
+        return "Verde-oliva: Representa paz, diplomacia e harmonia."
+    elif r > 0.59 and g > 0.59 and b > 0.8:
+        return "Lavanda: Ligado à serenidade, graça e elegância."
+    elif r > 0.4 and g < 0.39 and b < 0.2:
+        return "Marrom: Simboliza estabilidade, confiabilidade e segurança."
+    elif r < 0.39 and g < 0.59 and b > 0.59:
+        return "Azul-marinho: Representa autoridade, confiança e estabilidade."
+    elif r > 0.6 and g > 0.4 and b < 0.39:
+        return "Pêssego: Simboliza calor, conforto e carinho."
+    elif r < 0.39 and g > 0.59 and b < 0.2:
+        return "Verde-menta: Representa renovação, frescor e crescimento."
+    elif r > 0.5 and g < 0.39 and b < 0.39:
+        return "Coral: Simboliza entusiasmo, energia e vitalidade."
+    elif r < 0.2 and g < 0.2 and b < 0.2:
+        return "Carvão: Representa seriedade, profundidade e introspecção."
+    elif r < 0.59 and g > 0.59 and b < 0.39:
+        return "Chartreuse: Associado à criatividade, inovação e inspiração."
+    elif r > 0.78 and g > 0.78 and b < 0.59:
+        return "Marfim: Simboliza elegância, pureza e sofisticação."
+    elif r > 0.4 and g < 0.39 and b < 0.2:
+        return "Carmesim: Representa paixão, intensidade e força."
+    elif r < 0.39 and g > 0.39 and b > 0.59:
+        return "Azul-cobalto: Simboliza clareza, precisão e foco."
+
+    return "Cor não identificada. Consulte manualmente."
+
+def validate_color(color):
+    # Função fictícia para validar e normalizar valores de cor (RGB).
+    r, g, b = color
+    return r/255.0, g/255.0, b/255.0
+
 
 
 st.markdown("<h1 style='text-align: center;'>Identificação de Cores Dominantes e Psicologia das Cores</h1>", unsafe_allow_html=True)
