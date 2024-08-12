@@ -156,7 +156,6 @@ if st.sidebar.button("Executar"):
             fig, ax = plt.subplots(figsize=(10, 5))
             for i, stats in enumerate(statistics):
                 ci = stats['confidence_interval']
-                # Corrija o cálculo de yerr para garantir que não contenha valores negativos
                 yerr = [max(0, stats['mean'][0] - ci[0, 0]), max(0, ci[1, 0] - stats['mean'][0])]
                 ax.errorbar(i, stats['mean'][0], yerr=yerr, fmt='o', color='r', label='CI R' if i == 0 else "")
                 
