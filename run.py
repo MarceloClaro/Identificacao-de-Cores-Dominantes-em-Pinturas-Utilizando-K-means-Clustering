@@ -51,7 +51,14 @@ def interpret_color_psychology(color):
         {'color': (0.7, 0.2, 0.2), 'name': 'Carmesim', 'interpretation': 'Representa paixão, intensidade e força.'},
         {'color': (0.6, 0.5, 0.8), 'name': 'Violeta', 'interpretation': 'Associado à intuição, inovação, e misticismo.'},
         {'color': (0.7, 0.7, 0.7), 'name': 'Prata', 'interpretation': 'Conectado à pureza, precisão, e integridade.'},
+        {'color': (0.8, 0.4, 0), 'name': 'Âmbar', 'interpretation': 'Simboliza calor, segurança e aconchego.'},  # Nova cor
+        {'color': (0.2, 0.8, 0.2), 'name': 'Verde-oliva', 'interpretation': 'Representa paz, diplomacia e harmonia.'},  # Nova cor
+        {'color': (0.4, 0.2, 0.2), 'name': 'Marrom', 'interpretation': 'Simboliza estabilidade, confiabilidade e segurança.'},  # Nova cor
+        {'color': (0.5, 0.4, 0.4), 'name': 'Bege', 'interpretation': 'Representa simplicidade, confiabilidade e tradição.'},  # Nova cor
+        {'color': (1, 0.4, 0.7), 'name': 'Rosa', 'interpretation': 'Representa carinho, afeto e vulnerabilidade.'}  # Nova cor
     ]
+    
+
     
     closest_color = min(colors_db, key=lambda c: euclidean_distance(color, c['color']))
     return closest_color['interpretation']
