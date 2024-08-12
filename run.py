@@ -144,12 +144,46 @@ if st.sidebar.button("Executar"):
 
             # Mostrar estatísticas adicionais com explicações
             st.write("### Estatísticas das Cores Dominantes:")
+
+            # Gráfico da média das cores
+            fig, ax = plt.subplots(figsize=(10, 5))
+            mean_colors = np.array([stats['mean'] for stats in statistics])
+            ax.bar(range(num_clusters), mean_colors[:, 0], color=[f'#{r:02x}{g:02x}{b:02x}' for r, g, b in colors], label='R')
+            ax.bar(range(num_clusters), mean_colors[:, 1], color=[f'#{r:02x}{g:02x}{b:02x}' for r, g, b in colors], bottom=mean_colors[:, 0], label='G')
+            ax.bar(range(num_clusters), mean_colors[:, 2], color=[f'#{r:02x}{g:02x}{b:02x}' for r, g, b in colors], bottom=mean_colors[:, 0] + mean_colors[:, 1], label='B')
+            ax.set_xticks(range(num_clusters))
+            ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
+            ax.set_ylabel('Valor de Cor (RGB)')
+            ax.set_title('Média das Cores Dominantes')
+            ax.legend(loc='upper right')
+            st.pyplot(fig)
+
+            # Gráfico do desvio padrão das cores
+            fig, ax = plt.subplots(figsize=(10, 5))
+            std_devs = np.array([stats['std_dev'] for stats in statistics])
+            ax.bar(range(num_clusters), std_devs[:, 0], color='r', label='Desvio Padrão R')
+            ax.bar(range(num_clusters), std_devs[:, 1], color='g', bottom=std_devs[:, 0], label='Desvio Padrão G')
+            ax.bar(range(num_clusters), std_devs[:, 2], color='b', bottom=std_devs[:, 0] + std_devs[:, 1], label='Desvio Padrão B')
+            ax.set_xticks(range(num_clusters))
+            ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
+            ax.set_ylabel('Desvio Padrão de Cor (RGB)')
+            ax.set_title('Desvio Padrão das Cores Dominantes')
+            ax.legend(loc='upper right')
+            st.pyplot(fig)
+
+            # Gráfico do intervalo de confiança das cores
+            fig, ax = plt.subplots(figsize=(10, 5))
             for i, stats in enumerate(statistics):
-                st.write(f"**Cor {i+1}:**")
-                st.write(f"**Média (RGB):** {stats['mean']} - Esta é a cor média calculada para todos os pixels que foram agrupados nesse cluster. A média representa o valor central das cores no grupo.")
-                st.write(f"**Desvio Padrão (RGB):** {stats['std_dev']} - O desvio padrão indica o quanto as cores dos pixels nesse cluster variam em torno da média. Um desvio padrão menor sugere que as cores são mais uniformes, enquanto um desvio padrão maior indica uma maior variação.")
-                st.write(f"**Margem de Erro (RGB):** {stats['margin_of_error']} - A margem de erro mostra a precisão com que a média foi estimada. Quanto menor a margem de erro, mais confiantes podemos estar de que a média representa bem as cores do cluster.")
-                st.write(f"**Intervalo de Confiança (95%) (RGB):** {stats['confidence_interval']} - Este intervalo fornece uma faixa de valores dentro da qual a média verdadeira das cores do cluster deve cair, com 95% de confiança. É uma medida estatística que nos diz o quanto podemos confiar na média calculada.")
+                ci = stats['confidence_interval']
+                ax.errorbar(i, stats['mean'][0], yerr=[[stats['mean'][0'] - ci[0, 0]], [ci[1, 0] - stats['mean'][0]]], fmt='o', color='r', label='CI R' if i == 0 else "")
+                ax.errorbar(i, stats['mean'][1], yerr=[[stats['mean'][1'] - ci[0, 1]], [ci[1, 1] - stats['mean'][1]]], fmt='o', color='g', label='CI G' if i == 0 else "")
+                ax.errorbar(i, stats['mean'][2], yerr=[[stats['mean'][2'] - ci[0, 2]], [ci[1, 2] - stats['mean'][2]]], fmt='o', color='b', label='CI B' if i == 0 else "")
+            ax.set_xticks(range(num_clusters))
+            ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
+            ax.set_ylabel('Valor de Cor (RGB)')
+            ax.set_title('Intervalo de Confiança das Cores Dominantes (95%)')
+            ax.legend(loc='upper right')
+            st.pyplot(fig)
 
     else:
         st.error("Por favor, faça o upload de pelo menos uma imagem.")
