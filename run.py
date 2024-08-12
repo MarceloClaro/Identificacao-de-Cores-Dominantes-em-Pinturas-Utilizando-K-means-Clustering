@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import cv2
 from collections import Counter
 
-# Função para carregar e processar a imagem
+# Function to load and preprocess the image
 def load_and_preprocess_image(image_path, scale=100):
     image = cv2.imread(image_path)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -15,27 +15,26 @@ def load_and_preprocess_image(image_path, scale=100):
     pixels = image.reshape(-1, 3)
     return image, pixels
 
-# Função para aplicar o K-means clustering
+# Function to apply K-means clustering
 def apply_kmeans_clustering(pixels, n_clusters=5):
     kmeans = MiniBatchKMeans(n_clusters=n_clusters, random_state=42)
     kmeans.fit(pixels)
     return kmeans
 
-# Função para aplicar o Gaussian Mixture Model
+# Function to apply Gaussian Mixture Model
 def apply_gmm_clustering(pixels, n_clusters=5):
     gmm = GaussianMixture(n_components=n_clusters, random_state=42)
     gmm.fit(pixels)
     return gmm
 
-# Função para aplicar PCA
-def apply_pca(pixels, n_components=2):
+# Function to apply PCA
+def apply_pca(pixels, n_components=3):
     pca = PCA(n_components=n_components)
     transformed_pixels = pca.fit_transform(pixels)
     return transformed_pixels
 
-# Função para plotar as cores dominantes
+# Function to plot the dominant colors
 def plot_dominant_colors(colors, percentages, title="Cores Dominantes"):
-    # Verificar se o formato do array de cores é correto
     if colors.ndim == 2 and colors.shape[1] == 3:
         fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
         ax.imshow([colors], aspect='auto')
@@ -44,25 +43,28 @@ def plot_dominant_colors(colors, percentages, title="Cores Dominantes"):
     else:
         st.error("Formato de dados inválido para a exibição de cores dominantes.")
 
-# Função para criar um gráfico de pizza das cores dominantes
+# Function to create a pie chart of dominant colors
 def plot_pie_chart(colors, percentages):
-    fig, ax = plt.subplots(figsize=(8, 8))
-    wedges, texts, autotexts = ax.pie(percentages, labels=[f'{int(p*100)}%' for p in percentages],
-                                      colors=[f'#{r:02x}{g:02x}{b:02x}' for r, g, b in colors],
-                                      autopct='%1.1f%%', startangle=140)
-    for text in texts:
-        text.set_color('grey')
-    for autotext in autotexts:
-        autotext.set_color('white')
-    plt.title("Distribuição das Cores Dominantes")
-    st.pyplot(fig)
+    if colors.ndim == 2 and colors.shape[1] == 3:
+        fig, ax = plt.subplots(figsize=(8, 8))
+        wedges, texts, autotexts = ax.pie(percentages, labels=[f'{int(p*100)}%' for p in percentages],
+                                          colors=[f'#{r:02x}{g:02x}{b:02x}' for r, g, b in colors],
+                                          autopct='%1.1f%%', startangle=140)
+        for text in texts:
+            text.set_color('grey')
+        for autotext in autotexts:
+            autotext.set_color('white')
+        plt.title("Distribuição das Cores Dominantes")
+        st.pyplot(fig)
+    else:
+        st.error("Formato de dados inválido para a exibição de cores no gráfico de pizza.")
 
-# Função principal para processamento e análise da imagem
+# Main function to process and analyze the image
 def analyze_image(image_path, n_clusters=5, use_gmm=False, use_pca=False):
     image, pixels = load_and_preprocess_image(image_path)
 
     if use_pca:
-        pixels = apply_pca(pixels, n_components=2)
+        pixels = apply_pca(pixels, n_components=3)  # Ensure we keep 3 components for RGB
 
     if use_gmm:
         model = apply_gmm_clustering(pixels, n_clusters)
@@ -82,23 +84,23 @@ def analyze_image(image_path, n_clusters=5, use_gmm=False, use_pca=False):
 
     return colors, percentages
 
-# Configuração do Streamlit
+# Streamlit configuration
 st.title("Identificação de Cores Dominantes em Pinturas")
 st.markdown("Este aplicativo identifica as cores dominantes em uma pintura utilizando técnicas de clustering.")
 
-# Carregar imagem do usuário
+# Upload image
 uploaded_file = st.file_uploader("Escolha uma imagem", type=["jpg", "jpeg", "png"])
 
-# Selecionar o número de clusters
+# Select the number of clusters
 n_clusters = st.slider("Número de Clusters", 2, 10, 5)
 
-# Escolher algoritmo de clustering
+# Choose clustering algorithm
 algorithm = st.selectbox("Escolha o Algoritmo de Clustering", ["K-means", "Gaussian Mixture Model"])
 
-# Escolher se deseja usar PCA
+# Apply PCA option
 use_pca = st.checkbox("Aplicar PCA para Redução de Dimensionalidade")
 
-# Executar a análise quando a imagem for carregada
+# Analyze the image when uploaded
 if uploaded_file is not None:
     with st.spinner('Processando...'):
         image_path = uploaded_file.name
