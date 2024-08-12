@@ -103,6 +103,7 @@ if st.sidebar.button("Executar"):
 
             kmeans = KMeans(n_clusters=num_clusters, random_state=42)
             kmeans.fit(pixels)
+            colors = kmeans.fit(pixels)
             colors = kmeans.cluster_centers_
             labels = kmeans.labels_
 
@@ -133,18 +134,21 @@ if st.sidebar.button("Executar"):
             fig, ax = plt.subplots(1, 1, figsize=(8, 2))
             bar_width = 0.9
             for i, (color, percentage) in enumerate(dominant_colors):
-                ax.bar(i, 1, color=color, width=bar_width)
+                ax.bar(i, percentage, color=color, width=bar_width)  # Exibe as porcentagens
             ax.set_xticks(range(len(dominant_colors)))
-            ax.set_xticklabels([f'Cor {i+1}' for i in range(len(dominant_colors))])
+            ax.set_xticklabels([f'{percentage:.1%}' for _, percentage in dominant_colors])
             ax.set_yticks([])
             plt.title("Cores Dominantes")
             st.pyplot(fig)
 
             # Gráfico de pizza das cores dominantes
             fig, ax = plt.subplots(figsize=(8, 8))
-            wedges, texts, autotexts = ax.pie(percentages, labels=[f'{int(p*100)}%' for p in percentages],
+            wedges, texts, autotexts = ax.pie(percentages, 
+                                              labels=[f'{int(p*100)}%' for p in percentages],
                                               colors=colors_normalized,
-                                              autopct='%1.1f%%', startangle=140, textprops={'color':"w"})
+                                              autopct='%1.1f%%', 
+                                              startangle=140, 
+                                              textprops={'color':"w"})
             centre_circle = plt.Circle((0,0),0.70,fc='white')
             fig.gca().add_artist(centre_circle)
             plt.title("Distribuição das Cores Dominantes")
