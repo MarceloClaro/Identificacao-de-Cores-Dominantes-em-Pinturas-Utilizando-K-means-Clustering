@@ -9,7 +9,16 @@ import scipy.stats as stats
 # Corrigindo o erro de descompactação da cor
 def map_color_to_archetype(color):
     color = np.round(color).astype(int)  # Garante que os valores da cor sejam inteiros
-    r, g, b = color
+    
+    # Verifica a quantidade de dimensões
+    if len(color) == 3:
+        r, g, b = color
+    elif len(color) == 2:
+        r, g = color
+        b = 0  # Define um valor padrão para o canal azul
+    else:
+        return "Cor não identificada. Consulte manualmente."
+    
     if r > 150 and g < 100 and b < 100:
         return "Paixão, Ação, Energia (Vermelho)"
     elif b > 150 and g < 100 and r < 100:
@@ -28,7 +37,16 @@ def map_color_to_archetype(color):
 # Adicionando mapeamento baseado na Psicologia das Cores
 def interpret_color_psychology(color):
     color = np.round(color).astype(int)
-    r, g, b = color
+    
+    # Verifica a quantidade de dimensões
+    if len(color) == 3:
+        r, g, b = color
+    elif len(color) == 2:
+        r, g = color
+        b = 0  # Define um valor padrão para o canal azul
+    else:
+        return "Cor não identificada. Consulte manualmente."
+    
     if r > 150 and g < 100 and b < 100:
         return "Vermelho: Amor, Ódio, Perigo, Dinamismo"
     elif b > 150 and g < 100 and r < 100:
