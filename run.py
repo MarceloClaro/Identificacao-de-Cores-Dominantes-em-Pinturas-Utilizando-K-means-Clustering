@@ -142,10 +142,12 @@ if st.sidebar.button("Executar"):
             # Gráfico do desvio padrão das cores
             std_devs = np.array([stats['std_dev'] for stats in statistics])
             fig, ax = plt.subplots(figsize=(10, 5))
-            ax.bar(range(num_clusters), std_devs[:, 0], color='r', label='Desvio Padrão R')
-            ax.bar(range(num_clusters), std_devs[:, 1], color='g', bottom=std_devs[:, 0], label='Desvio Padrão G')
-            ax.bar(range(num_clusters), std_devs[:, 2], color='b', bottom=std_devs[:, 0] + std_devs[:, 1], label='Desvio Padrão B')
-            ax.set_xticks(range(num_clusters))
+            bar_width = 0.3
+            index = np.arange(num_clusters)
+            rects1 = ax.bar(index - bar_width, std_devs[:, 0], bar_width, color='r', label='Desvio Padrão R')
+            rects2 = ax.bar(index, std_devs[:, 1], bar_width, color='g', label='Desvio Padrão G')
+            rects3 = ax.bar(index + bar_width, std_devs[:, 2], bar_width, color='b', label='Desvio Padrão B')
+            ax.set_xticks(index)
             ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
             ax.set_ylabel('Desvio Padrão de Cor (RGB)')
             ax.set_title('Desvio Padrão das Cores Dominantes')
@@ -156,15 +158,10 @@ if st.sidebar.button("Executar"):
             fig, ax = plt.subplots(figsize=(10, 5))
             for i, stats in enumerate(statistics):
                 ci = stats['confidence_interval']
-                yerr = [max(0, stats['mean'][0] - ci[0, 0]), max(0, ci[1, 0] - stats['mean'][0])]
-                ax.errorbar(i, stats['mean'][0], yerr=yerr, fmt='o', color='r', label='CI R' if i == 0 else "")
-                
-                yerr = [max(0, stats['mean'][1] - ci[0, 1]), max(0, ci[1, 1] - stats['mean'][1])]
-                ax.errorbar(i, stats['mean'][1], yerr=yerr, fmt='o', color='g', label='CI G' if i == 0 else "")
-                
-                yerr = [max(0, stats['mean'][2] - ci[0, 2]), max(0, ci[1, 2] - stats['mean'][2])]
-                ax.errorbar(i, stats['mean'][2], yerr=yerr, fmt='o', color='b', label='CI B' if i == 0 else "")
-
+                mean_color = stats['mean']
+                ax.errorbar(i, mean_color[0], yerr=[mean_color[0] - ci[0, 0], ci[1, 0] - mean_color[0]], fmt='o', color='r', label='CI R' if i == 0 else "")
+                ax.errorbar(i, mean_color[1], yerr=[mean_color[1] - ci[0, 1], ci[1, 1] - mean_color[1]], fmt='o', color='g', label='CI G' if i == 0 else "")
+                ax.errorbar(i, mean_color[2], yerr=[mean_color[2] - ci[0, 2], ci[1, 2] - mean_color[2]], fmt='o', color='b', label='CI B' if i == 0 else "")
             ax.set_xticks(range(num_clusters))
             ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
             ax.set_ylabel('Valor de Cor (RGB)')
