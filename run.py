@@ -19,7 +19,7 @@ with st.sidebar.expander("Instruções"):
     Este aplicativo permite identificar as cores dominantes em uma pintura utilizando o algoritmo K-means Clustering, Análise de Componentes Principais (PCA) e Rede Neural. Siga as instruções abaixo para usar o aplicativo:
 
     **Passos:**
-    1. Faça o upload de duas imagens utilizando o botão "Browse files".
+    1. Faça o upload de até 10 imagens utilizando o botão "Browse files".
     2. Escolha o número de clusters para a segmentação de cores utilizando o controle deslizante.
     3. Escolha se deseja aplicar PCA para redução de dimensionalidade ou usar uma Rede Neural para classificação.
     4. Clique no botão "Executar" para processar as imagens.
@@ -39,8 +39,8 @@ with st.sidebar.expander("Instruções"):
     Este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
     """)
 
-# Upload das imagens pelo usuário
-uploaded_files = st.sidebar.file_uploader("Escolha duas imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
+# Upload das imagens pelo usuário (aceitando de 1 a 10 imagens)
+uploaded_files = st.sidebar.file_uploader("Escolha de 1 a 10 imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
 
 # Selecionar o número de clusters
 num_clusters = st.sidebar.slider("Número de Clusters", 1, 10, 5)
@@ -53,7 +53,7 @@ use_nn = st.sidebar.checkbox("Usar Rede Neural para classificação de cores", v
 
 # Botão para executar a análise
 if st.sidebar.button("Executar"):
-    if len(uploaded_files) == 2:
+    if 1 <= len(uploaded_files) <= 10:
         for uploaded_file in uploaded_files:
             # Ler a imagem do upload
             file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
@@ -128,7 +128,7 @@ if st.sidebar.button("Executar"):
             for color, percentage in dominant_colors:
                 st.write(f"Cor: {color}, Porcentagem: {percentage:.2%}")
     else:
-        st.error("Por favor, faça o upload de duas imagens.")
+        st.error("Por favor, faça o upload de 1 a 10 imagens.")
 
 # Informações adicionais na barra lateral
 st.sidebar.image("logo.png", width=80)
