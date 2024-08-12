@@ -33,8 +33,14 @@ def apply_pca(pixels, n_components=3):
     transformed_pixels = pca.fit_transform(pixels)
     return transformed_pixels
 
+# Function to normalize and convert colors to valid RGB values
+def normalize_colors(colors):
+    colors = np.clip(colors, 0, 255)
+    return colors.astype(int)
+
 # Function to plot the dominant colors
 def plot_dominant_colors(colors, percentages, title="Cores Dominantes"):
+    colors = normalize_colors(colors)
     if colors.ndim == 2 and colors.shape[1] == 3:
         fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
         ax.imshow([colors], aspect='auto')
@@ -45,6 +51,7 @@ def plot_dominant_colors(colors, percentages, title="Cores Dominantes"):
 
 # Function to create a pie chart of dominant colors
 def plot_pie_chart(colors, percentages):
+    colors = normalize_colors(colors)
     if colors.ndim == 2 and colors.shape[1] == 3:
         fig, ax = plt.subplots(figsize=(8, 8))
         wedges, texts, autotexts = ax.pie(percentages, labels=[f'{int(p*100)}%' for p in percentages],
@@ -69,11 +76,11 @@ def analyze_image(image_path, n_clusters=5, use_gmm=False, use_pca=False):
     if use_gmm:
         model = apply_gmm_clustering(pixels, n_clusters)
         labels = model.predict(pixels)
-        colors = model.means_.astype(int)
+        colors = model.means_
     else:
         model = apply_kmeans_clustering(pixels, n_clusters)
         labels = model.labels_
-        colors = model.cluster_centers_.astype(int)
+        colors = model.cluster_centers_
 
     counts = Counter(labels)
     total_count = sum(counts.values())
