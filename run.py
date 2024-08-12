@@ -27,7 +27,12 @@ with st.sidebar.expander("Instruções"):
 # Função para garantir que as cores estejam no formato adequado para o matplotlib
 def validate_color(color):
     color = np.clip(np.round(color), 0, 255).astype(int)
-    return color[0], color[1], color[2]  # Retorna r, g, b
+    if color.size == 3:
+        return color[0], color[1], color[2]  # Retorna r, g, b
+    elif color.size == 2:
+        return color[0], color[1], 0  # Se tiver apenas 2 valores, adicione um 0 para o azul
+    else:
+        return color[0], 0, 0  # Se tiver apenas 1 valor, use-o para o vermelho e defina verde e azul como 0
 
 # Função para calcular a distância euclidiana
 def euclidean_distance(c1, c2):
@@ -64,6 +69,7 @@ def interpret_color_psychology(color):
     
     closest_color = min(colors_db, key=lambda c: euclidean_distance((r, g, b), c['color']))
     return closest_color  # Retorna o dicionário inteiro
+
 
 # Configuração do streamlit
 uploaded_files = st.sidebar.file_uploader("Escolha até 10 imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
@@ -126,7 +132,7 @@ if st.sidebar.button("Executar"):
             fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
             bar_width = 1
             index = np.arange(len(colors))
-            ax.bar(index, [1] * len(colors), color=[(r, g, b) for (r, g, b) in colors], width=bar_width)
+            ax.bar(index, [1] * len(colors), color=[validate_color(color) for color in colors], width=bar_width)
             ax.set_xticks(index)
             ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
             plt.title("Cores Dominantes")
@@ -135,7 +141,7 @@ if st.sidebar.button("Executar"):
             # Gráfico de pizza das cores dominantes
             fig, ax = plt.subplots(figsize=(8, 8))
             wedges, texts, autotexts = ax.pie(percentages, labels=[f'{int(p*100)}%' for p in percentages],
-                                              colors=[(r, g, b) for (r, g, b) in colors],
+                                              colors=[validate_color(color) for color in colors],
                                               autopct='%1.1f%%', startangle=140)
             for text in texts:
                 text.set_color('grey')
@@ -150,7 +156,7 @@ if st.sidebar.button("Executar"):
                 color_info = interpretations[i]
                 st.write(f"**Cor {i+1}:** {color_info['name']} ({color}) - {percentage:.2%}")
                 st.write(f"**Interpretação Psicológica:** {color_info['interpretation']}")
-                st.write("<hr>", unsafe_allow_html=True)
+                st.markdown("<hr>", unsafe_allow_html=True)
 
     else:
         st.error("Por favor, faça o upload de pelo menos uma imagem.")
@@ -166,9 +172,3 @@ Whatsapp: (88)981587145
 
 Instagram: [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
 """)
-
-
-
-
-
-                                 
