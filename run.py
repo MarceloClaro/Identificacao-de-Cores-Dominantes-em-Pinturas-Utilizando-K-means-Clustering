@@ -56,10 +56,10 @@ def interpret_color_psychology(color):
         {'color': (0.4, 0.2, 0.2), 'name': 'Marrom', 'interpretation': 'Simboliza estabilidade, confiabilidade e segurança.'},
         {'color': (0.5, 0.4, 0.4), 'name': 'Bege', 'interpretation': 'Representa simplicidade, confiabilidade e tradição.'},
         {'color': (1, 0.4, 0.7), 'name': 'Rosa', 'interpretation': 'Representa carinho, afeto e vulnerabilidade.'},
-        {'color': (0.6, 0.4, 0.2), 'name': 'Sépia', 'interpretation': 'Evoke nostalgia and antiquity.'},
-        {'color': (0.4, 0.2, 0.6), 'name': 'Lavanda', 'interpretation': 'Represents serenity, grace, and elegance.'},
-        {'color': (0.3, 0.3, 0.7), 'name': 'Índigo', 'interpretation': 'Associated with deep thoughts and spirituality.'},
-        {'color': (0.3, 0.6, 0.3), 'name': 'Verde-musgo', 'interpretation': 'Represents resilience, endurance, and balance.'},
+        {'color': (0.6, 0.4, 0.2), 'name': 'Sépia', 'interpretation': 'Evoca nostalgia e antiguidade.'},
+        {'color': (0.4, 0.2, 0.6), 'name': 'Lavanda', 'interpretation': 'Representa serenidade, graça e elegância.'},
+        {'color': (0.3, 0.3, 0.7), 'name': 'Índigo', 'interpretation': 'Associado a pensamentos profundos e espiritualidade.'},
+        {'color': (0.3, 0.6, 0.3), 'name': 'Verde-musgo', 'interpretation': 'Representa resiliência, endurance e equilíbrio.'},
     ]
     
     closest_color = min(colors_db, key=lambda c: euclidean_distance(color, c['color']))
