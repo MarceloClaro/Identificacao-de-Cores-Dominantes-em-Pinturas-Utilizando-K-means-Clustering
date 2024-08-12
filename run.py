@@ -6,39 +6,21 @@ import matplotlib.pyplot as plt
 import cv2
 import scipy.stats as stats
 
-# Corrigindo o erro de descompactação da cor
-def map_color_to_archetype(color):
-    color = np.round(color).astype(int)  # Garante que os valores da cor sejam inteiros
-    
-    # Verifica a quantidade de dimensões
+# Corrigindo o erro de descompactação da cor e conversão para hexadecimal
+def color_to_hex(color):
+    color = np.round(color).astype(int)
     if len(color) == 3:
         r, g, b = color
     elif len(color) == 2:
         r, g = color
         b = 0  # Define um valor padrão para o canal azul
     else:
-        return "Cor não identificada. Consulte manualmente."
-    
-    if r > 150 and g < 100 and b < 100:
-        return "Paixão, Ação, Energia (Vermelho)"
-    elif b > 150 and g < 100 and r < 100:
-        return "Calma, Sabedoria, Proteção (Azul)"
-    elif r > 150 and g > 150 and b < 100:
-        return "Otimismo, Criatividade, Poder (Amarelo)"
-    elif g > 150 and r < 100 and b < 100:
-        return "Crescimento, Cura, Abundância (Verde)"
-    elif r < 50 and g < 50 and b < 50:
-        return "Mistério, Inconsciente, Transformação (Preto)"
-    elif r > 200 and g > 200 and b > 200:
-        return "Pureza, Clareza, Novos Começos (Branco)"
-    else:
-        return "Outros - Interpretar com base em contexto"
+        r = g = b = 0  # Define valores padrão se algo der errado
+    return f'#{r:02x}{g:02x}{b:02x}'
 
 # Adicionando mapeamento baseado na Psicologia das Cores
 def interpret_color_psychology(color):
     color = np.round(color).astype(int)
-    
-    # Verifica a quantidade de dimensões
     if len(color) == 3:
         r, g, b = color
     elif len(color) == 2:
@@ -113,11 +95,9 @@ if st.sidebar.button("Executar"):
             st.image(image, caption='Imagem Analisada', use_column_width=True)
 
             dominant_colors = []
-            archetypes = []
             interpretations = []
             for color, percentage in zip(colors, percentages):
                 dominant_colors.append((color, percentage))
-                archetypes.append(map_color_to_archetype(color))
                 interpretations.append(interpret_color_psychology(color))
 
             fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
@@ -125,7 +105,7 @@ if st.sidebar.button("Executar"):
                 sp.set_visible(False)
             bar_width = 1
             index = np.arange(len(colors))
-            ax.bar(index, [1] * len(colors), color=[f'#{r:02x}{g:02x}{b:02x}' for r, g, b in colors], width=bar_width)
+            ax.bar(index, [1] * len(colors), color=[color_to_hex(color) for color in colors], width=bar_width)
             ax.set_xticks(index)
             ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
             plt.title("Cores Dominantes")
@@ -133,7 +113,7 @@ if st.sidebar.button("Executar"):
 
             fig, ax = plt.subplots(figsize=(8, 8))
             wedges, texts, autotexts = ax.pie(percentages, labels=[f'{int(p*100)}%' for p in percentages],
-                                              colors=[f'#{r:02x}{g:02x}{b:02x}' for r, g, b in colors],
+                                              colors=[color_to_hex(color) for color in colors],
                                               autopct='%1.1f%%', startangle=140)
             for text in texts:
                 text.set_color('grey')
@@ -142,10 +122,9 @@ if st.sidebar.button("Executar"):
             plt.title("Distribuição das Cores Dominantes")
             st.pyplot(fig)
 
-            st.write("Cores dominantes, arquétipos e interpretações psicológicas:")
+            st.write("Cores dominantes e interpretações psicológicas:")
             for i, (color, percentage) in enumerate(dominant_colors):
                 st.write(f"**Cor {i+1}:** {color} - {percentage:.2%}")
-                st.write(f"**Arquétipo:** {archetypes[i]}")
                 st.write(f"**Interpretação Psicológica:** {interpretations[i]}")
 
     else:
