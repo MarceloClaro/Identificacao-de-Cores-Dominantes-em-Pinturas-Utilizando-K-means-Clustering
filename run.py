@@ -21,12 +21,32 @@ with st.sidebar.expander("Instruções"):
     **Passos:**
     1. Faça o upload de duas imagens utilizando o botão "Browse files".
     2. Escolha o número de clusters para a segmentação de cores utilizando o controle deslizante.
-    3. Clique no botão "Executar" para processar as imagens.
+    3. Se desejar, ative a opção de PCA para redução de dimensionalidade.
+    4. Clique no botão "Executar" para processar as imagens.
 
-    **Detalhes Técnicos:**
-    - **Upload da Imagem:** O aplicativo aceita imagens nos formatos JPG, JPEG e PNG.
-    - **Número de Clusters:** Você pode selecionar entre 1 e 10 clusters para identificar diferentes cores dominantes na imagem.
-    - **Resultados:** O aplicativo exibirá uma barra com as cores dominantes e um gráfico de pizza mostrando a distribuição percentual de cada cor para cada imagem.
+    **PCA (Análise de Componentes Principais):**
+    
+    Como psicólogo, você sabe que as cores desempenham um papel crucial na percepção e podem influenciar o estado emocional de uma pessoa. No entanto, quando se trata de análise digital de imagens, as cores são representadas por valores numéricos em três dimensões: vermelho, verde e azul (RGB). Cada cor em uma imagem é uma combinação desses três componentes.
+
+    O PCA (Principal Component Analysis), ou Análise de Componentes Principais, é uma técnica estatística que pode ser usada para simplificar esses dados. Ele faz isso reduzindo a quantidade de informação, mantendo ao mesmo tempo o máximo de variação possível nas cores. No entanto, há algo importante que você precisa entender:
+
+    **1. Redução de Dimensionalidade:**
+    - Imagine que cada cor seja um ponto em um espaço tridimensional (com eixos vermelho, verde e azul). Quando aplicamos o PCA, estamos essencialmente "achatando" esse espaço tridimensional em duas dimensões. Isso significa que estamos descartando uma parte da informação de cor original, o que pode alterar significativamente a percepção das cores.
+
+    **2. Transformação das Cores:**
+    - Após o PCA, as cores são reconfiguradas. Elas não correspondem mais diretamente aos componentes RGB originais, mas são novas combinações das cores, baseadas nos "componentes principais" que o PCA calcula. Como resultado, as cores dominantes identificadas após a aplicação do PCA podem parecer diferentes das cores originais na imagem.
+
+    **3. Mudança de Percepção:**
+    - Em termos práticos, isso significa que a cor "vermelha" que você vê após o PCA pode não ser mais o mesmo vermelho vibrante da imagem original; pode se tornar um tom mais apagado ou até mudar completamente para outra cor. Isso pode ser útil em algumas análises, como quando se deseja simplificar a imagem para identificar padrões de cor mais amplos, mas não é ideal quando se quer preservar a fidelidade das cores originais.
+
+    **Como Decidir se Deve Usar o PCA:**
+    - **Evite usar PCA se:** A precisão das cores for crucial para a análise. Por exemplo, se você estiver analisando a cor em um contexto terapêutico e a cor específica é essencial para o entendimento do estado emocional ou simbólico.
+    - **Use PCA se:** Você quiser reduzir ruído ou simplificar a imagem para focar em padrões de cor gerais, sem se preocupar tanto com a exatidão das cores individuais.
+
+    **Conclusão:**
+    Se o seu objetivo é entender as cores exatamente como elas aparecem na imagem original, é melhor não ativar a opção de PCA. Caso contrário, se você deseja uma simplificação que possa destacar tendências gerais de cor, o PCA pode ser uma ferramenta valiosa.
+
+    **Resultados:** O aplicativo exibirá uma barra com as cores dominantes e um gráfico de pizza mostrando a distribuição percentual de cada cor para cada imagem.
 
     **Inovações:**
     - Utilização de técnicas de ciência de dados para análise de imagens.
@@ -45,7 +65,6 @@ with st.sidebar.expander("Instruções"):
 
     Em resumo, este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
     """)
-
 
 
 # Função para garantir que as cores estejam no formato adequado para o matplotlib
