@@ -1,5 +1,6 @@
 import streamlit as st
 from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
@@ -20,11 +21,13 @@ with st.sidebar.expander("Instruções"):
     **Passos:**
     1. Faça o upload de uma ou até dez imagens utilizando o botão "Browse files".
     2. Escolha o número de clusters para a segmentação de cores utilizando o controle deslizante.
-    3. Clique no botão "Executar" para processar as imagens.
+    3. Se desejar, ative a opção de PCA para redução de dimensionalidade.
+    4. Clique no botão "Executar" para processar as imagens.
 
     **Detalhes Técnicos:**
     - **Upload da Imagem:** O aplicativo aceita imagens nos formatos JPG, JPEG e PNG.
     - **Número de Clusters:** Você pode selecionar entre 1 e 10 clusters para identificar diferentes cores dominantes na imagem.
+    - **PCA:** Se ativado, a PCA será aplicada para reduzir a dimensionalidade dos dados de cores antes do K-means clustering.
     - **Resultados:** O aplicativo exibirá uma barra com as cores dominantes e um gráfico de pizza mostrando a distribuição percentual de cada cor para cada imagem.
 
     **Inovações:**
@@ -51,6 +54,9 @@ uploaded_files = st.sidebar.file_uploader("Escolha até 10 imagens...", type=["j
 # Selecionar o número de clusters
 num_clusters = st.sidebar.slider("Número de Clusters", 1, 10, 5)
 
+# Opção para PCA
+apply_pca = st.sidebar.checkbox("Aplicar PCA para Redução de Dimensionalidade")
+
 # Função para calcular estatísticas
 def calculate_statistics(pixels, labels, cluster_centers):
     statistics = []
@@ -68,32 +74,26 @@ def calculate_statistics(pixels, labels, cluster_centers):
         })
     return statistics
 
-# Função para verificar se a imagem foi carregada corretamente
-def load_image(uploaded_file):
-    try:
-        file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-        image = cv2.imdecode(file_bytes, 1)
-        if image is None:
-            st.error("Não foi possível processar a imagem.")
-            return None
-        return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    except Exception as e:
-        st.error(f"Erro ao processar a imagem: {e}")
-        return None
-
 # Botão para executar a análise
 if st.sidebar.button("Executar"):
-    if uploaded_files:
+    if len(uploaded_files) >= 1:
         for uploaded_file in uploaded_files:
-            image = load_image(uploaded_file)
-            if image is None:
-                continue
+            # Ler a imagem do upload
+            file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
+            image = cv2.imdecode(file_bytes, 1)
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
             # Redimensionar a imagem para acelerar o processamento
             image_small = cv2.resize(image, (100, 100))
 
             # Converter a imagem para um array 2D
             pixels = image_small.reshape(-1, 3)
+
+            # Aplicar PCA se selecionado
+            if apply_pca:
+                pca = PCA(n_components=2)  # Reduzir para 2 componentes
+                pixels = pca.fit_transform(pixels)
+                st.write("PCA aplicada para redução de dimensionalidade.")
 
             # Aplicar K-means clustering para identificar as cores dominantes
             kmeans = KMeans(n_clusters=num_clusters, random_state=42)
@@ -115,7 +115,9 @@ if st.sidebar.button("Executar"):
             st.image(image, caption='Imagem Analisada', use_column_width=True)
 
             # Mostrar as cores dominantes e suas porcentagens
-            dominant_colors = [(color, percentage) for color, percentage in zip(colors, percentages)]
+            dominant_colors = []
+            for color, percentage in zip(colors, percentages):
+                dominant_colors.append((color, percentage))
 
             # Plotar as cores dominantes como uma barra
             fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
@@ -137,30 +139,9 @@ if st.sidebar.button("Executar"):
             plt.title("Distribuição das Cores Dominantes")
             st.pyplot(fig)
 
-            # Exibir as cores dominantes e suas porcentagens
-            st.write("Cores dominantes e suas porcentagens:")
-            for color, percentage in dominant_colors:
-                st.write(f"Cor: {color}, Porcentagem: {percentage:.2%}")
-
-            # Mostrar estatísticas adicionais com explicações
-            st.write("### Estatísticas das Cores Dominantes:")
-
-            # Gráfico da média das cores
-            fig, ax = plt.subplots(figsize=(10, 5))
-            mean_colors = np.array([stats['mean'] for stats in statistics])
-            ax.bar(range(num_clusters), mean_colors[:, 0], color=[f'#{r:02x}{g:02x}{b:02x}' for r, g, b in colors], label='R')
-            ax.bar(range(num_clusters), mean_colors[:, 1], color=[f'#{r:02x}{g:02x}{b:02x}' for r, g, b in colors], bottom=mean_colors[:, 0], label='G')
-            ax.bar(range(num_clusters), mean_colors[:, 2], color=[f'#{r:02x}{g:02x}{b:02x}' for r, g, b in colors], bottom=mean_colors[:, 0] + mean_colors[:, 1], label='B')
-            ax.set_xticks(range(num_clusters))
-            ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
-            ax.set_ylabel('Valor de Cor (RGB)')
-            ax.set_title('Média das Cores Dominantes')
-            ax.legend(loc='upper right')
-            st.pyplot(fig)
-
             # Gráfico do desvio padrão das cores
-            fig, ax = plt.subplots(figsize=(10, 5))
             std_devs = np.array([stats['std_dev'] for stats in statistics])
+            fig, ax = plt.subplots(figsize=(10, 5))
             ax.bar(range(num_clusters), std_devs[:, 0], color='r', label='Desvio Padrão R')
             ax.bar(range(num_clusters), std_devs[:, 1], color='g', bottom=std_devs[:, 0], label='Desvio Padrão G')
             ax.bar(range(num_clusters), std_devs[:, 2], color='b', bottom=std_devs[:, 0] + std_devs[:, 1], label='Desvio Padrão B')
@@ -175,15 +156,36 @@ if st.sidebar.button("Executar"):
             fig, ax = plt.subplots(figsize=(10, 5))
             for i, stats in enumerate(statistics):
                 ci = stats['confidence_interval']
-                ax.errorbar(i, stats['mean'][0], yerr=[[stats['mean'][0] - ci[0, 0]], [ci[1, 0] - stats['mean'][0]]], fmt='o', color='r', label='CI R' if i == 0 else "")
-                ax.errorbar(i, stats['mean'][1], yerr=[[stats['mean'][1] - ci[0, 1]], [ci[1, 1] - stats['mean'][1]]], fmt='o', color='g', label='CI G' if i == 0 else "")
-                ax.errorbar(i, stats['mean'][2], yerr=[[stats['mean'][2] - ci[0, 2]], [ci[1, 2] - stats['mean'][2]]], fmt='o', color='b', label='CI B' if i == 0 else "")
+                # Corrija o cálculo de yerr para garantir que não contenha valores negativos
+                yerr = [max(0, stats['mean'][0] - ci[0, 0]), max(0, ci[1, 0] - stats['mean'][0])]
+                ax.errorbar(i, stats['mean'][0], yerr=yerr, fmt='o', color='r', label='CI R' if i == 0 else "")
+                
+                yerr = [max(0, stats['mean'][1] - ci[0, 1]), max(0, ci[1, 1] - stats['mean'][1])]
+                ax.errorbar(i, stats['mean'][1], yerr=yerr, fmt='o', color='g', label='CI G' if i == 0 else "")
+                
+                yerr = [max(0, stats['mean'][2] - ci[0, 2]), max(0, ci[1, 2] - stats['mean'][2])]
+                ax.errorbar(i, stats['mean'][2], yerr=yerr, fmt='o', color='b', label='CI B' if i == 0 else "")
+
             ax.set_xticks(range(num_clusters))
             ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
             ax.set_ylabel('Valor de Cor (RGB)')
             ax.set_title('Intervalo de Confiança das Cores Dominantes (95%)')
             ax.legend(loc='upper right')
             st.pyplot(fig)
+
+            # Exibir as cores dominantes e suas porcentagens
+            st.write("Cores dominantes e suas porcentagens:")
+            for color, percentage in dominant_colors:
+                st.write(f"Cor: {color}, Porcentagem: {percentage:.2%}")
+
+            # Mostrar estatísticas adicionais com explicações
+            st.write("### Estatísticas das Cores Dominantes:")
+            for i, stats in enumerate(statistics):
+                st.write(f"**Cor {i+1}:**")
+                st.write(f"**Média (RGB):** {stats['mean']} - Esta é a cor média calculada para todos os pixels que foram agrupados nesse cluster. A média representa o valor central das cores no grupo.")
+                st.write(f"**Desvio Padrão (RGB):** {stats['std_dev']} - O desvio padrão indica o quanto as cores dos pixels nesse cluster variam em torno da média. Um desvio padrão menor sugere que as cores são mais uniformes, enquanto um desvio padrão maior indica uma maior variação.")
+                st.write(f"**Margem de Erro (RGB):** {stats['margin_of_error']} - A margem de erro mostra a precisão com que a média foi estimada. Quanto menor a margem de erro, mais confiantes podemos estar de que a média representa bem as cores do cluster.")
+                st.write(f"**Intervalo de Confiança (95%) (RGB):** {stats['confidence_interval']} - Este intervalo fornece uma faixa de valores dentro da qual a média verdadeira das cores do cluster deve cair, com 95% de confiança. É uma medida estatística que nos diz o quanto podemos confiar na média calculada.")
 
     else:
         st.error("Por favor, faça o upload de pelo menos uma imagem.")
@@ -199,4 +201,3 @@ Whatsapp: (88)981587145
 
 Instagram: [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
 """)
-
