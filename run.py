@@ -5,9 +5,10 @@ from sklearn.neural_network import MLPClassifier
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+from scipy import stats
 
 # Título e descrição
-st.markdown("<h1 style='text-align: center;'>Identificação de Cores Dominantes em Pinturas</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>Identificação de Cores Dominantes em Pinturas com Estatísticas</h1>", unsafe_allow_html=True)
 st.markdown("<hr>", unsafe_allow_html=True)
 st.write("𝐂𝐨𝐧𝐡𝐞𝐜̧𝐚 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞𝐨𝐫𝐢𝐚𝐬, 𝐝𝐨𝐦𝐢𝐧𝐞 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞́𝐜𝐧𝐢𝐜𝐚𝐬, 𝐦𝐚𝐬 𝐚𝐨 𝐭𝐨𝐜𝐚𝐫 𝐮𝐦𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚, 𝐬𝐞𝐣𝐚 𝐚𝐩𝐞𝐧𝐚𝐬 𝐨𝐮𝐭𝐫𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚 (𝐂.𝐆. 𝐉𝐮𝐧𝐠)")
 st.markdown("<hr>", unsafe_allow_html=True)
@@ -16,27 +17,23 @@ st.markdown("<hr>", unsafe_allow_html=True)
 st.sidebar.image("psicologia.jpg", width=200)
 with st.sidebar.expander("Instruções"):
     st.markdown("""
-    Este aplicativo permite identificar as cores dominantes em uma pintura utilizando o algoritmo K-means Clustering, Análise de Componentes Principais (PCA) e Rede Neural. Siga as instruções abaixo para usar o aplicativo:
+    Este aplicativo permite identificar as cores dominantes em uma pintura utilizando K-means Clustering, PCA, e Rede Neural. Siga as instruções abaixo:
 
     **Passos:**
     1. Faça o upload de até 10 imagens utilizando o botão "Browse files".
-    2. Escolha o número de clusters para a segmentação de cores utilizando o controle deslizante.
-    3. Escolha se deseja aplicar PCA para redução de dimensionalidade ou usar uma Rede Neural para classificação.
+    2. Escolha o número de clusters para segmentação de cores.
+    3. Escolha se deseja aplicar PCA ou usar Rede Neural.
     4. Clique no botão "Executar" para processar as imagens.
 
     **Inovações:**
-    - Integração de técnicas de ciência de dados para análise de imagens.
-    - Interface interativa que permite personalização pelo usuário.
+    - Estatísticas avançadas, incluindo margem de erro.
+    - Interface interativa personalizável.
 
     **Pontos Positivos:**
-    - Fácil de usar e intuitivo, mesmo para usuários sem experiência prévia em processamento de imagens.
-    - Resultados visuais claros e informativos.
+    - Resultados visuais claros e estatísticas relevantes.
 
     **Limitações:**
-    - O tempo de processamento pode variar dependendo do tamanho da imagem.
-    - A precisão da segmentação pode ser afetada por imagens com muitas cores semelhantes.
-
-    Este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
+    - Tempo de processamento varia com o tamanho da imagem.
     """)
 
 # Upload das imagens pelo usuário (aceitando de 1 a 10 imagens)
@@ -95,6 +92,19 @@ if st.sidebar.button("Executar"):
             # Converter cores para valores inteiros
             colors = colors.astype(int)
 
+            # Calcular margem de erro e outras estatísticas
+            margin_of_error = []
+            std_devs = []
+            conf_intervals = []
+            for i in range(num_clusters):
+                cluster_pixels = pixels[labels == i]
+                std_dev = np.std(cluster_pixels, axis=0)
+                margin_err = std_dev / np.sqrt(cluster_pixels.shape[0]) * 1.96  # 95% CI
+                conf_int = stats.norm.interval(0.95, loc=colors[i], scale=std_dev)
+                std_devs.append(std_dev)
+                margin_of_error.append(margin_err)
+                conf_intervals.append(conf_int)
+
             # Mostrar a imagem original
             st.image(image, caption='Imagem Analisada', use_column_width=True)
 
@@ -123,10 +133,13 @@ if st.sidebar.button("Executar"):
             plt.title("Distribuição das Cores Dominantes")
             st.pyplot(fig)
 
-            # Exibir as cores dominantes e suas porcentagens
-            st.write("Cores dominantes e suas porcentagens:")
-            for color, percentage in dominant_colors:
+            # Exibir as cores dominantes, suas porcentagens e margem de erro
+            st.write("Cores dominantes e estatísticas relevantes:")
+            for i, (color, percentage, moe, std, ci) in enumerate(zip(colors, percentages, margin_of_error, std_devs, conf_intervals)):
                 st.write(f"Cor: {color}, Porcentagem: {percentage:.2%}")
+                st.write(f"Margem de Erro (95% CI): ±{moe}, Desvio Padrão: {std}")
+                st.write(f"Intervalo de Confiança (95%): {ci}")
+                st.write("---")
     else:
         st.error("Por favor, faça o upload de 1 a 10 imagens.")
 
