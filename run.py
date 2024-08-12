@@ -1,6 +1,5 @@
 import streamlit as st
 from sklearn.cluster import KMeans
-from sklearn.decomposition import PCA
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
@@ -78,12 +77,8 @@ with st.sidebar.expander("Referências"):
 
 # Função para garantir que as cores estejam no formato adequado para o matplotlib
 def validate_color(color):
-    color = np.round(color).astype(int)
-    if len(color) == 2:
-        color = np.append(color, 0)  # Adiciona o valor do azul como 0 se a cor tiver apenas dois componentes
-    elif len(color) == 1:
-        color = np.append(color, [0, 0])  # Adiciona valores para verde e azul se a cor tiver apenas um componente
-    return np.clip(color, 0, 255) / 255  # Normaliza as cores para o intervalo [0, 1]
+    color = np.clip(np.round(color), 0, 255).astype(int)
+    return color / 255  # Normaliza as cores para o intervalo [0, 1]
 
 def interpret_color_psychology(color):
     r, g, b = validate_color(color)
