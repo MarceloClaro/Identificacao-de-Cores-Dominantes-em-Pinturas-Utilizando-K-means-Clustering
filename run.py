@@ -15,20 +15,16 @@ st.markdown("<hr>", unsafe_allow_html=True)
 st.sidebar.image("psicologia.jpg", width=200)
 with st.sidebar.expander("Instruções"):
     st.markdown("""
-    Este aplicativo permite identificar as cores dominantes em uma pintura utilizando os algoritmos K-means Clustering e PCA. Siga as instruções abaixo para usar o aplicativo:
+    Este aplicativo permite identificar as cores dominantes em uma pintura utilizando o algoritmo K-means Clustering e a Análise de Componentes Principais (PCA). Siga as instruções abaixo para usar o aplicativo:
 
     **Passos:**
     1. Faça o upload de duas imagens utilizando o botão "Browse files".
-    2. Escolha o número de clusters e componentes principais para a segmentação de cores utilizando os controles deslizantes.
-    3. Clique no botão "Executar" para processar as imagens.
-
-    **Detalhes Técnicos:**
-    - **Upload da Imagem:** O aplicativo aceita imagens nos formatos JPG, JPEG e PNG.
-    - **Número de Clusters e Componentes Principais:** Você pode selecionar entre 1 e 10 clusters para identificar diferentes cores dominantes na imagem e entre 1 e 3 componentes principais para simplificação da imagem usando PCA.
-    - **Resultados:** O aplicativo exibirá uma barra com as cores dominantes e um gráfico de pizza mostrando a distribuição percentual de cada cor para cada imagem.
+    2. Escolha o número de clusters para a segmentação de cores utilizando o controle deslizante.
+    3. Escolha se deseja aplicar PCA para redução de dimensionalidade.
+    4. Clique no botão "Executar" para processar as imagens.
 
     **Inovações:**
-    - Utilização de técnicas de ciência de dados para análise de imagens.
+    - Integração de técnicas de ciência de dados para análise de imagens.
     - Interface interativa que permite personalização pelo usuário.
 
     **Pontos Positivos:**
@@ -39,18 +35,17 @@ with st.sidebar.expander("Instruções"):
     - O tempo de processamento pode variar dependendo do tamanho da imagem.
     - A precisão da segmentação pode ser afetada por imagens com muitas cores semelhantes.
 
-    **Importância de Ter Instruções:**
-    - As instruções claras garantem que o aplicativo possa ser utilizado eficientemente por qualquer pessoa, independentemente do seu nível de conhecimento técnico.
-
-    Em resumo, este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
+    Este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
     """)
 
 # Upload das imagens pelo usuário
 uploaded_files = st.sidebar.file_uploader("Escolha duas imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
 
-# Selecionar o número de clusters e componentes principais
+# Selecionar o número de clusters
 num_clusters = st.sidebar.slider("Número de Clusters", 1, 10, 5)
-num_components = st.sidebar.slider("Número de Componentes Principais (PCA)", 1, 3, 3)
+
+# Checkbox para aplicar PCA
+apply_pca = st.sidebar.checkbox("Aplicar PCA para redução de dimensionalidade", value=True)
 
 # Botão para executar a análise
 if st.sidebar.button("Executar"):
@@ -67,14 +62,22 @@ if st.sidebar.button("Executar"):
             # Converter a imagem para um array 2D
             pixels = image_small.reshape(-1, 3)
 
-            # Aplicar PCA para redução de dimensionalidade
-            pca = PCA(n_components=num_components)
-            pca_pixels = pca.fit_transform(pixels)
+            # Aplicar PCA para redução de dimensionalidade, se selecionado
+            if apply_pca:
+                pca = PCA(n_components=2)
+                pixels = pca.fit_transform(pixels)
 
             # Aplicar K-means clustering para identificar as cores dominantes
             kmeans = KMeans(n_clusters=num_clusters, random_state=42)
-            kmeans.fit(pca_pixels)
-            colors = pca.inverse_transform(kmeans.cluster_centers_)
+            kmeans.fit(pixels)
+            colors = kmeans.cluster_centers_
+
+            # Se PCA foi aplicado, reverter a transformação para as cores originais
+            if apply_pca:
+                colors = pca.inverse_transform(colors)
+
+            colors = np.clip(colors, 0, 255)  # Garantir que os valores estão dentro da faixa RGB
+
             labels = kmeans.labels_
 
             # Calcular a porcentagem de cada cor
