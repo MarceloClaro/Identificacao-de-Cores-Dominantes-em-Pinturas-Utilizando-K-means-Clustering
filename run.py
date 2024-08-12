@@ -1,11 +1,10 @@
 import streamlit as st
 from sklearn.cluster import KMeans
-from sklearn.decomposition import PCA
 from sklearn.neural_network import MLPClassifier
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
-from scipy import stats
+import scipy.stats as stats
 
 # Título e descrição
 st.markdown("<h1 style='text-align: center;'>Identificação de Cores Dominantes em Pinturas</h1>", unsafe_allow_html=True)
@@ -17,16 +16,20 @@ st.markdown("<hr>", unsafe_allow_html=True)
 st.sidebar.image("psicologia.jpg", width=200)
 with st.sidebar.expander("Instruções"):
     st.markdown("""
-    Este aplicativo permite identificar as cores dominantes em uma pintura utilizando o algoritmo K-means Clustering, Análise de Componentes Principais (PCA) e Rede Neural. Siga as instruções abaixo para usar o aplicativo:
+    Este aplicativo permite identificar as cores dominantes em uma pintura utilizando o algoritmo K-means Clustering. Siga as instruções abaixo para usar o aplicativo:
 
     **Passos:**
-    1. Faça o upload de até 10 imagens utilizando o botão "Browse files".
+    1. Faça o upload de uma ou até dez imagens utilizando o botão "Browse files".
     2. Escolha o número de clusters para a segmentação de cores utilizando o controle deslizante.
-    3. Escolha se deseja aplicar PCA para redução de dimensionalidade ou usar uma Rede Neural para classificação.
-    4. Clique no botão "Executar" para processar as imagens.
+    3. Clique no botão "Executar" para processar as imagens.
+
+    **Detalhes Técnicos:**
+    - **Upload da Imagem:** O aplicativo aceita imagens nos formatos JPG, JPEG e PNG.
+    - **Número de Clusters:** Você pode selecionar entre 1 e 10 clusters para identificar diferentes cores dominantes na imagem.
+    - **Resultados:** O aplicativo exibirá uma barra com as cores dominantes e um gráfico de pizza mostrando a distribuição percentual de cada cor para cada imagem.
 
     **Inovações:**
-    - Integração de técnicas de ciência de dados para análise de imagens.
+    - Utilização de técnicas de ciência de dados para análise de imagens.
     - Interface interativa que permite personalização pelo usuário.
 
     **Pontos Positivos:**
@@ -37,41 +40,38 @@ with st.sidebar.expander("Instruções"):
     - O tempo de processamento pode variar dependendo do tamanho da imagem.
     - A precisão da segmentação pode ser afetada por imagens com muitas cores semelhantes.
 
-    Este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
+    **Importância de Ter Instruções:**
+    - As instruções claras garantem que o aplicativo possa ser utilizado eficientemente por qualquer pessoa, independentemente do seu nível de conhecimento técnico.
+
+    Em resumo, este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
     """)
 
-# Upload das imagens pelo usuário (aceitando de 1 a 10 imagens)
-uploaded_files = st.sidebar.file_uploader("Escolha de 1 a 10 imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
+# Upload das imagens pelo usuário
+uploaded_files = st.sidebar.file_uploader("Escolha até 10 imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
 
 # Selecionar o número de clusters
 num_clusters = st.sidebar.slider("Número de Clusters", 1, 10, 5)
 
-# Checkbox para aplicar PCA
-apply_pca = st.sidebar.checkbox("Aplicar PCA para redução de dimensionalidade", value=True)
-
-# Checkbox para usar Rede Neural
-use_nn = st.sidebar.checkbox("Usar Rede Neural para classificação de cores", value=False)
-
-# Função para calcular a margem de erro e outros estatísticos
+# Função para calcular estatísticas
 def calculate_statistics(pixels, labels, cluster_centers):
     statistics = []
-    for i in range(cluster_centers.shape[0]):
+    for i in range(len(cluster_centers)):
         cluster_pixels = pixels[labels == i]
-        mean_color = cluster_centers[i]
+        mean_color = np.mean(cluster_pixels, axis=0)
         std_dev = np.std(cluster_pixels, axis=0)
-        margin_of_error = stats.sem(cluster_pixels, axis=0) * stats.t.ppf((1 + 0.95) / 2., cluster_pixels.shape[0]-1)
-        conf_interval = [mean_color - margin_of_error, mean_color + margin_of_error]
+        margin_of_error = stats.sem(cluster_pixels, axis=0) * stats.t.ppf((1 + 0.95) / 2., len(cluster_pixels)-1)
+        conf_interval = np.vstack((mean_color - margin_of_error, mean_color + margin_of_error)).T
         statistics.append({
             'mean': mean_color,
             'std_dev': std_dev,
             'margin_of_error': margin_of_error,
-            'conf_interval': conf_interval
+            'confidence_interval': conf_interval
         })
     return statistics
 
 # Botão para executar a análise
 if st.sidebar.button("Executar"):
-    if 1 <= len(uploaded_files) <= 10:
+    if len(uploaded_files) >= 1:
         for uploaded_file in uploaded_files:
             # Ler a imagem do upload
             file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
@@ -84,27 +84,11 @@ if st.sidebar.button("Executar"):
             # Converter a imagem para um array 2D
             pixels = image_small.reshape(-1, 3)
 
-            if apply_pca:
-                pca = PCA(n_components=2)
-                pixels = pca.fit_transform(pixels)
-
-            if use_nn:
-                # Aplicar Rede Neural para identificar as cores dominantes
-                nn_model = MLPClassifier(hidden_layer_sizes=(100,), max_iter=300, random_state=42)
-                nn_model.fit(pixels, np.random.randint(0, num_clusters, size=pixels.shape[0]))
-                labels = nn_model.predict(pixels)
-                colors = np.array([pixels[labels == i].mean(axis=0) for i in range(num_clusters)])
-            else:
-                # Aplicar K-means clustering para identificar as cores dominantes
-                kmeans = KMeans(n_clusters=num_clusters, random_state=42)
-                kmeans.fit(pixels)
-                colors = kmeans.cluster_centers_
-                labels = kmeans.labels_
-
-            if apply_pca:
-                colors = pca.inverse_transform(colors)
-
-            colors = np.clip(colors, 0, 255)  # Garantir que os valores estão dentro da faixa RGB
+            # Aplicar K-means clustering para identificar as cores dominantes
+            kmeans = KMeans(n_clusters=num_clusters, random_state=42)
+            kmeans.fit(pixels)
+            colors = kmeans.cluster_centers_
+            labels = kmeans.labels_
 
             # Calcular a porcentagem de cada cor
             counts = np.bincount(labels)
@@ -144,16 +128,21 @@ if st.sidebar.button("Executar"):
             plt.title("Distribuição das Cores Dominantes")
             st.pyplot(fig)
 
-            # Exibir as cores dominantes, suas porcentagens, e estatísticas
-            st.write("Cores dominantes, suas porcentagens e estatísticas:")
-            for i, (color, percentage) in enumerate(dominant_colors):
+            # Exibir as cores dominantes e suas porcentagens
+            st.write("Cores dominantes e suas porcentagens:")
+            for color, percentage in dominant_colors:
                 st.write(f"Cor: {color}, Porcentagem: {percentage:.2%}")
-                st.write(f" - Desvio Padrão: {statistics[i]['std_dev']}")
-                st.write(f" - Margem de Erro: {statistics[i]['margin_of_error']}")
-                st.write(f" - Intervalo de Confiança (95%): {statistics[i]['conf_interval']}")
 
+            # Mostrar estatísticas adicionais
+            st.write("Estatísticas das cores:")
+            for i, stats in enumerate(statistics):
+                st.write(f"Cor {i+1}:")
+                st.write(f"Média: {stats['mean']}")
+                st.write(f"Desvio Padrão: {stats['std_dev']}")
+                st.write(f"Margem de Erro: {stats['margin_of_error']}")
+                st.write(f"Intervalo de Confiança (95%): {stats['confidence_interval']}")
     else:
-        st.error("Por favor, faça o upload de 1 a 10 imagens.")
+        st.error("Por favor, faça o upload de pelo menos uma imagem.")
 
 # Informações adicionais na barra lateral
 st.sidebar.image("logo.png", width=80)
