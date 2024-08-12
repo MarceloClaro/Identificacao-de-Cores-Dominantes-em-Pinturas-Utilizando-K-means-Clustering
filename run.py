@@ -65,7 +65,16 @@ with st.sidebar.expander("Instruções"):
 
     Em resumo, este aplicativo é uma ferramenta poderosa para análise de cores em pinturas, utilizando técnicas avançadas de aprendizado de máquina para fornecer resultados precisos e visualmente agradáveis.
     """)
+with st.sidebar.expander("Referências"):
+    st.markdown("""
+    ### Referências:
 
+    - **Heller, Eva. "A Psicologia das Cores." Editorial Gustavo Gili, 2000.**
+    - **Jung, Carl G. "The Archetypes and The Collective Unconscious." Princeton University Press, 1959.**
+    - **Yoon, Seungjae, & Chun, Myungsoon. "An Autobiographical Study on the Color Psychology of Art." Journal of Art Therapy, 2022.** [Link](https://typeset.io/papers/an-autobiographical-study-on-the-color-psychology-of-art-2wlwfd5v)
+    - **McDonald, Emily. "Jungian Archetypes: A Step Towards Scientific Enquiry." Journal of Analytical Psychology, 2020.** [Link](https://typeset.io/papers/jungian-archetypes-a-step-towards-scientific-enquiry-14yljcno47)
+    - **Potash, Jordan. "Archetypal Aesthetics: Viewing Art Through States of Consciousness." Art Therapy Journal, 2015.** [Link](https://typeset.io/papers/archetypal-aesthetics-viewing-art-through-states-of-586grld0zu)
+    """)
 
 # Função para garantir que as cores estejam no formato adequado para o matplotlib
 def validate_color(color):
