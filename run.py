@@ -27,7 +27,7 @@ with st.sidebar.expander("Instruções"):
 # Função para garantir que as cores estejam no formato adequado para o matplotlib
 def validate_color(color):
     color = np.clip(np.round(color), 0, 255).astype(int)
-    return color / 255  # Normaliza as cores para o intervalo [0, 1]
+    return color[0], color[1], color[2]  # Retorna r, g, b
 
 # Função para calcular a distância euclidiana
 def euclidean_distance(c1, c2):
@@ -56,15 +56,14 @@ def interpret_color_psychology(color):
         {'color': (0.4, 0.2, 0.2), 'name': 'Marrom', 'interpretation': 'Simboliza estabilidade, confiabilidade e segurança.'},
         {'color': (0.5, 0.4, 0.4), 'name': 'Bege', 'interpretation': 'Representa simplicidade, confiabilidade e tradição.'},
         {'color': (1, 0.4, 0.7), 'name': 'Rosa', 'interpretation': 'Representa carinho, afeto e vulnerabilidade.'},
-        {'color': (0.6, 0.4, 0.2), 'name': 'Sépia', 'interpretation': 'Evoca nostalgia e antiguidade.'},
-        {'color': (0.4, 0.2, 0.6), 'name': 'Lavanda', 'interpretation': 'Representa serenidade, graça e elegância.'},
-        {'color': (0.3, 0.3, 0.7), 'name': 'Índigo', 'interpretation': 'Associado a pensamentos profundos e espiritualidade.'},
-        {'color': (0.3, 0.6, 0.3), 'name': 'Verde-musgo', 'interpretation': 'Representa resiliência, endurance e equilíbrio.'},
+        {'color': (0.6, 0.4, 0.2), 'name': 'Sépia', 'interpretation': 'Evoke nostalgia and antiquity.'},
+        {'color': (0.4, 0.2, 0.6), 'name': 'Lavanda', 'interpretation': 'Represents serenity, grace, and elegance.'},
+        {'color': (0.3, 0.3, 0.7), 'name': 'Índigo', 'interpretation': 'Associated with deep thoughts and spirituality.'},
+        {'color': (0.3, 0.6, 0.3), 'name': 'Verde-musgo', 'interpretation': 'Represents resilience, endurance, and balance.'},
     ]
     
-    closest_color = min(colors_db, key=lambda c: euclidean_distance(color, c['color']))
+    closest_color = min(colors_db, key=lambda c: euclidean_distance((r, g, b), c['color']))
     return closest_color  # Retorna o dicionário inteiro
-
 
 # Configuração do streamlit
 uploaded_files = st.sidebar.file_uploader("Escolha até 10 imagens...", type=["jpg", "jpeg", "png"], accept_multiple_files=True)
@@ -127,16 +126,16 @@ if st.sidebar.button("Executar"):
             fig, ax = plt.subplots(1, 1, figsize=(8, 2), subplot_kw=dict(xticks=[], yticks=[], frame_on=False))
             bar_width = 1
             index = np.arange(len(colors))
-            ax.bar(index, [1] * len(colors), color=[validate_color(color) for color in colors], width=bar_width)
+            ax.bar(index, [1] * len(colors), color=[(r, g, b) for (r, g, b) in colors], width=bar_width)
             ax.set_xticks(index)
             ax.set_xticklabels([f'Cor {i+1}' for i in range(num_clusters)])
             plt.title("Cores Dominantes")
             st.pyplot(fig)
 
-            # Gráfico de pizza das cores dominantes (continuação)
+            # Gráfico de pizza das cores dominantes
             fig, ax = plt.subplots(figsize=(8, 8))
             wedges, texts, autotexts = ax.pie(percentages, labels=[f'{int(p*100)}%' for p in percentages],
-                                              colors=[validate_color(color) for color in colors],
+                                              colors=[(r, g, b) for (r, g, b) in colors],
                                               autopct='%1.1f%%', startangle=140)
             for text in texts:
                 text.set_color('grey')
@@ -167,3 +166,9 @@ Whatsapp: (88)981587145
 
 Instagram: [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
 """)
+
+
+
+
+
+                                 
