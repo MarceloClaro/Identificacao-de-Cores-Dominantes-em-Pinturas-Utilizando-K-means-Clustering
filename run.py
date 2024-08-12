@@ -1,6 +1,5 @@
 import streamlit as st
 from sklearn.cluster import KMeans
-from sklearn.neural_network import MLPClassifier
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
@@ -133,14 +132,15 @@ if st.sidebar.button("Executar"):
             for color, percentage in dominant_colors:
                 st.write(f"Cor: {color}, Porcentagem: {percentage:.2%}")
 
-            # Mostrar estatísticas adicionais
-            st.write("Estatísticas das cores:")
+            # Mostrar estatísticas adicionais com explicações
+            st.write("### Estatísticas das Cores Dominantes:")
             for i, stats in enumerate(statistics):
-                st.write(f"Cor {i+1}:")
-                st.write(f"Média: {stats['mean']}")
-                st.write(f"Desvio Padrão: {stats['std_dev']}")
-                st.write(f"Margem de Erro: {stats['margin_of_error']}")
-                st.write(f"Intervalo de Confiança (95%): {stats['confidence_interval']}")
+                st.write(f"**Cor {i+1}:**")
+                st.write(f"**Média (RGB):** {stats['mean']} - Esta é a cor média calculada para todos os pixels que foram agrupados nesse cluster. A média representa o valor central das cores no grupo.")
+                st.write(f"**Desvio Padrão (RGB):** {stats['std_dev']} - O desvio padrão indica o quanto as cores dos pixels nesse cluster variam em torno da média. Um desvio padrão menor sugere que as cores são mais uniformes, enquanto um desvio padrão maior indica uma maior variação.")
+                st.write(f"**Margem de Erro (RGB):** {stats['margin_of_error']} - A margem de erro mostra a precisão com que a média foi estimada. Quanto menor a margem de erro, mais confiantes podemos estar de que a média representa bem as cores do cluster.")
+                st.write(f"**Intervalo de Confiança (95%) (RGB):** {stats['confidence_interval']} - Este intervalo fornece uma faixa de valores dentro da qual a média verdadeira das cores do cluster deve cair, com 95% de confiança. É uma medida estatística que nos diz o quanto podemos confiar na média calculada.")
+
     else:
         st.error("Por favor, faça o upload de pelo menos uma imagem.")
 
@@ -155,3 +155,4 @@ Whatsapp: (88)981587145
 
 Instagram: [Equipe de Psicologia 5º Semestre](https://www.instagram.com/_psicologias/)
 """)
+
