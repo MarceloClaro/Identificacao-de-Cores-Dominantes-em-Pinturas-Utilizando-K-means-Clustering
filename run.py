@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 import scipy.stats as stats
+import pandas as pd
 
 # Título e descrição
 st.markdown("<h1 style='text-align: center;'>Identificação de Cores Dominantes em Pinturas</h1>", unsafe_allow_html=True)
@@ -88,6 +89,8 @@ def calculate_statistics(pixels, labels, cluster_centers):
 
 if st.sidebar.button("Executar"):
     if len(uploaded_files) >= 1:
+        all_results = []  # Lista para armazenar os resultados de todas as imagens
+
         for uploaded_file in uploaded_files:
             file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
             image = cv2.imdecode(file_bytes, 1)
@@ -101,9 +104,8 @@ if st.sidebar.button("Executar"):
                 pixels = pca.fit_transform(pixels)
                 st.write("PCA aplicada para redução de dimensionalidade.")
 
-            kmeans = KMeans(n_clusters=num_clusters, random_state=42)
+            kmeans = kmeans = KMeans(n_clusters=num_clusters, random_state=42)
             kmeans.fit(pixels)
-            colors = kmeans.fit(pixels)
             colors = kmeans.cluster_centers_
             labels = kmeans.labels_
 
@@ -130,25 +132,35 @@ if st.sidebar.button("Executar"):
                 closest_color_info = interpret_color_psychology(color)
                 interpretations.append(closest_color_info)
 
+            # Salvar os resultados em uma lista de dicionários para cada cor dominante
+            for i, (color, percentage) in enumerate(dominant_colors):
+                color_info = interpretations[i]
+                r, g, b = [int(c*255) for c in color]
+                result = {
+                    "Imagem": uploaded_file.name,
+                    "Cor": f"RGB({r}, {g}, {b})",
+                    "Nome da Cor": color_info['name'],
+                    "Porcentagem": f"{percentage:.2%}",
+                    "Interpretação Psicológica": color_info['interpretation']
+                }
+                all_results.append(result)
+
             # Visualização das cores dominantes
             fig, ax = plt.subplots(1, 1, figsize=(8, 2))
             bar_width = 0.9
             for i, (color, percentage) in enumerate(dominant_colors):
-                ax.bar(i, percentage, color=color, width=bar_width)  # Exibe as porcentagens
+                ax.bar(i, 1, color=color, width=bar_width)
             ax.set_xticks(range(len(dominant_colors)))
-            ax.set_xticklabels([f'{percentage:.1%}' for _, percentage in dominant_colors])
+            ax.set_xticklabels([f'Cor {i+1}' for i in range(len(dominant_colors))])
             ax.set_yticks([])
             plt.title("Cores Dominantes")
             st.pyplot(fig)
 
             # Gráfico de pizza das cores dominantes
             fig, ax = plt.subplots(figsize=(8, 8))
-            wedges, texts, autotexts = ax.pie(percentages, 
-                                              labels=[f'{int(p*100)}%' for p in percentages],
+            wedges, texts, autotexts = ax.pie(percentages, labels=[f'{int(p*100)}%' for p in percentages],
                                               colors=colors_normalized,
-                                              autopct='%1.1f%%', 
-                                              startangle=140, 
-                                              textprops={'color':"w"})
+                                              autopct='%1.1f%%', startangle=140, textprops={'color':"w"})
             centre_circle = plt.Circle((0,0),0.70,fc='white')
             fig.gca().add_artist(centre_circle)
             plt.title("Distribuição das Cores Dominantes")
@@ -162,6 +174,16 @@ if st.sidebar.button("Executar"):
                 st.write(f"**Cor {i+1}:** {color_info['name']} (RGB: {r}, {g}, {b}) - {percentage:.2%}")
                 st.write(f"**Interpretação Psicológica:** {color_info['interpretation']}")
                 st.markdown("<hr>", unsafe_allow_html=True)
+
+        # Converter a lista de resultados para um DataFrame e salvar como CSV
+        results_df = pd.DataFrame(all_results)
+        csv = results_df.to_csv(index=False).encode('utf-8')
+        st.download_button(
+            label="Baixar resultados como CSV",
+            data=csv,
+            file_name='cores_dominantes_resultados.csv',
+            mime='text/csv',
+        )
 
     else:
         st.error("Por favor, faça o upload de pelo menos uma imagem.")
