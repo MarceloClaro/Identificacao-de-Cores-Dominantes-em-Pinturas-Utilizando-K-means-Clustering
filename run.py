@@ -128,28 +128,29 @@ def interpret_color_psychology(color):
                 'indicando um período de introspecção e paz interior. '
                 'Na psicologia das cores, o azul é amplamente reconhecido por seus efeitos calmantes e é frequentemente utilizado '
                 'para promover tranquilidade e reduzir o estresse. Estudos mostram que a cor azul pode ter um efeito sedativo, '
-                'ajudando a diminuir a ansiedade e até mesmo a dor. Além disso, a obra de artistas como Picasso, em seu "Período Azul", '
-                'destaca como essa cor pode ser utilizada para expressar tristeza e sofrimento, refletindo emoções mais profundas através da arte.'
+                'ajudando a diminuir a ansiedade e até mesmo a dor. Além disso, a cor azul tem sido utilizada em arteterapia para '
+                'facilitar o relaxamento e a introspecção, promovendo um estado mental mais sereno e equilibrado.'
                 '\n\nReferências: '
-                '[Azeemi & Raza, 2005](https://doi.org/10.1093/ecam/neh137), '
-                '[Gharib, 2020](https://www.scirp.org/journal/paperinformation.aspx?paperid=102013).'
-                
+                '[Hong & Lee, 2017](https://typeset.io/papers/the-influence-of-vr-color-image-for-color-psychotherapy-5ptv8frcwm?utm_source=chatgpt), '
+                '[Pirro, 1985](https://typeset.io/papers/the-psychology-of-color-44499ejhza?utm_source=chatgpt).'
+
             )
         },
         {
             'color': (1, 1, 0),
             'name': 'Amarelo',
             'interpretation': (
-                'Ligado à criatividade, intelecto e alegria. O Amarelo está associado ao arquétipo do Herói na teoria junguiana, '
-                'representando a busca por iluminação, crescimento e o desenvolvimento do self. Este arquétipo reflete o desejo de '
-                'superar obstáculos e alcançar novos níveis de consciência. Na psicologia das cores, o amarelo é frequentemente '
-                'relacionado à alegria e ao otimismo, mas também pode indicar ansiedade ou medo do fracasso. Pesquisas sugerem que '
-                'o amarelo pode influenciar positivamente o humor e a energia, promovendo sentimentos de felicidade e motivação. '
-                'Contudo, sua intensidade pode provocar cansaço visual e até frustração em alguns contextos, especialmente quando usado em excesso.'
+                'Ligado à criatividade, intelecto e alegria. '
+                'O Amarelo está associado ao arquétipo do Herói na teoria junguiana, '
+                'representando a busca por iluminação, crescimento e o desenvolvimento do self. '
+                'Este arquétipo reflete o desejo de superar obstáculos e alcançar novos níveis de consciência. '
+                'Na psicologia das cores, o amarelo é frequentemente relacionado à alegria e ao otimismo, '
+                'mas também pode indicar ansiedade ou medo do fracasso. Estudos sugerem que a cor amarela pode '
+                'estimular o sistema nervoso, promovendo uma sensação de alerta e clareza mental, mas também pode '
+                'levar à inquietação em alguns contextos terapêuticos.'
                 '\n\nReferências: '
-                '[Artitude, 2023](https://artitude.ca/incorporating-colour-into-art-therapy), '
-                '[Dunn-Edwards, 2015](https://www.dunnedwards.com/colors/specs-spaces/color-psychology-how-the-color-yellow-can-create-an-optimistic-space).'
-                
+                '[Birren, 1950](https://typeset.io/papers/the-symbolism-of-colors-9f73hx9qr?utm_source=chatgpt), '
+                '[Van Leeuwen, 2011](https://typeset.io/papers/the-impact-of-color-on-the-mind-and-body-8fz9jbd7k2?utm_source=chatgpt).'
             )
         },
         {
@@ -160,11 +161,15 @@ def interpret_color_psychology(color):
                 'No contexto dos arquétipos junguianos, o Verde está ligado ao arquétipo da Mãe Terra, '
                 'simbolizando o ciclo de vida, a nutrição e o renascimento. '
                 'Este arquétipo reflete uma conexão com a natureza e o desejo de estabilidade e crescimento. '
-                'Na psicologia das cores, o verde é visto como calmante e equilibrante, muitas vezes usado '
-                'para representar renovação e harmonia.'
+                'Na psicologia das cores, o verde é frequentemente visto como calmante e equilibrante, '
+                'muitas vezes usado para representar renovação e harmonia. Estudos indicam que a cor verde '
+                'pode promover sentimentos de relaxamento e bem-estar, sendo eficaz na redução do estresse e '
+                'na criação de um ambiente tranquilo, ideal para sessões de terapia.'
                 '\n\nReferências: '
-                '[Bostan, 2022](https://typeset.io/papers/jungian-approach-to-cinema-archetypal-analysis-of-turning-1wvwee1k?utm_source=chatgpt).'
+                '[Dorohan, 2023](https://typeset.io/papers/colour-therapy-psychological-and-physiological-aspects-2v1coruser?utm_source=chatgpt), '
+                '[Costantini, 2016](https://typeset.io/papers/green-the-history-of-a-color-fndpif9s3p?utm_source=chatgpt).'
             )
+
         },
         {
             'color': (0, 0, 0),
