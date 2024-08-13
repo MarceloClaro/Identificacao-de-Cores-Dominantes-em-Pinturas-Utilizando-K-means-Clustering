@@ -456,13 +456,13 @@ if st.sidebar.button("Executar"):
                 }
                 all_results.append(result)
 
-            # Visualização das cores dominantes
+            # Visualização das cores dominantes - Gráfico de Barras com porcentagens
             fig, ax = plt.subplots(1, 1, figsize=(8, 2))
             bar_width = 0.9
             for i, (color, percentage) in enumerate(dominant_colors):
-                ax.bar(i, 1, color=color, width=bar_width)
+                ax.bar(i, percentage, color=color, width=bar_width)
             ax.set_xticks(range(len(dominant_colors)))
-            ax.set_xticklabels([f'Cor {i+1}' for i in range(len(dominant_colors))])
+            ax.set_xticklabels([f'{percentage:.1%}' for color, percentage in dominant_colors])
             ax.set_yticks([])
             plt.title("Cores Dominantes")
             st.pyplot(fig)
