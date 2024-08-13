@@ -12,17 +12,78 @@ st.markdown("<hr>", unsafe_allow_html=True)
 st.write("𝐂𝐨𝐧𝐡𝐞𝐜̧𝐚 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞𝐨𝐫𝐢𝐚𝐬, 𝐝𝐨𝐦𝐢𝐧𝐞 𝐭𝐨𝐝𝐚𝐬 𝐚𝐬 𝐭𝐞́𝐜𝐧𝐢𝐜𝐚𝐬, 𝐦𝐚𝐬 𝐚𝐨 𝐭𝐨𝐜𝐚𝐫 𝐮𝐦𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚, 𝐬𝐞𝐣𝐚 𝐚𝐩𝐞𝐧𝐚𝐬 𝐨𝐮𝐭𝐫𝐚 𝐚𝐥𝐦𝐚 𝐡𝐮𝐦𝐚𝐧𝐚 (𝐂.𝐆. 𝐉𝐮𝐧𝐠)")
 st.markdown("<hr>", unsafe_allow_html=True)
 
+
 # Instruções na barra lateral
 st.sidebar.image("psicologia.jpg", width=200)
 with st.sidebar.expander("Instruções"):
     st.markdown("""
     **Passos:**
-    1. Faça o upload de até 10 imagens utilizando o botão "Browse files".
-    2. Escolha o número de clusters para a segmentação de cores utilizando o controle deslizante.
-    3. Se desejar, ative a opção de PCA para redução de dimensionalidade.
-    4. Clique no botão "Executar" para processar as imagens.
+    1. **Upload das Imagens**: Utilize o botão "Browse files" para fazer o upload de até 10 imagens no formato JPG, JPEG ou PNG. Essas imagens serão analisadas para identificar as cores dominantes.
+    
+    2. **Seleção de Clusters**: Use o controle deslizante para escolher o número de clusters para a segmentação de cores. Esse número representa quantas cores distintas você deseja identificar em cada imagem. O valor padrão é 5, mas você pode selecionar qualquer valor entre 1 e 10.
 
-    **Nota:** Evite usar PCA se a precisão das cores for crucial para a análise.
+    3. **Redução de Dimensionalidade com PCA**: Se a opção de PCA (Análise de Componentes Principais) estiver ativada, a dimensionalidade dos dados de cor será reduzida antes da segmentação. Isso pode acelerar o processo, mas pode também sacrificar a precisão das cores. Recomendado apenas se estiver processando imagens muito grandes ou complexas.
+
+    4. **Processamento das Imagens**: Após configurar os parâmetros, clique no botão "Executar" para iniciar a análise das imagens. O algoritmo de K-Means será aplicado para identificar e exibir as cores dominantes, juntamente com suas respectivas porcentagens.
+
+    **Importante:** A ativação da opção PCA é opcional e deve ser usada com cautela. Se a precisão na identificação das cores for essencial para sua análise, é recomendável não utilizar essa opção.
+
+    **Impacto do PCA:**
+    - **Precisão das Cores:** O PCA pode alterar as cores ao simplificar os dados, o que pode reduzir a precisão na identificação das cores originais. Isso é particularmente relevante em imagens onde cada detalhe cromático é crucial.
+    - **Simplificação e Redução de Ruído:** Em imagens complexas, o PCA pode ajudar a destacar padrões principais e reduzir ruídos desnecessários. No entanto, isso pode ocorrer à custa de uma menor fidelidade de cor.
+    - **Tempo de Processamento:** O PCA pode reduzir o tempo de processamento ao simplificar os dados, tornando a análise mais eficiente em cenários com recursos computacionais limitados ou muitas imagens para processar.
+    - **Recomendações:** Use o PCA se estiver lidando com imagens muito complexas e precisar otimizar o tempo de processamento. Evite-o se a precisão das cores é fundamental para a sua interpretação psicológica das imagens.
+
+    **Exemplos Práticos de PCA em Imagens:**
+    1. **Redução de Ruído em Imagens**: PCA pode ser utilizado para reduzir ruídos cromáticos em imagens detalhadas, destacando cores predominantes e eliminando variações sutis que não são importantes.
+    2. **Compressão de Imagens para Análise Rápida**: Utilizar PCA para comprimir informações de cor em imagens de alta resolução, permitindo uma análise mais rápida, embora com potencial perda de nuances.
+    3. **Destaque de Padrões Cromáticos em Imagens Artísticas**: PCA pode ajudar a identificar padrões cromáticos dominantes em pinturas abstratas, ressaltando paletas de cores subjacentes.
+    4. **Simplificação de Cores em Imagens Médicas**: Em imagens médicas, PCA pode agrupar tons semelhantes, facilitando a segmentação e destacando áreas de interesse, mas com possível perda de detalhes sutis.
+
+    **Tipos de Imagens para Análise**
+
+    1. **Imagens Simples (Com Poucas Cores Distintas)**
+    - **Exemplo:** Uma pintura com grandes áreas de cores uniformes, como um céu azul claro com uma área verde de grama.
+    - **Impacto na Análise:** 
+      - **PCA:** Pode não ser necessário, pois as cores são já bem distintas e o PCA pode simplificar excessivamente, perdendo nuances importantes.
+      - **Clusterização:** Um número menor de clusters (2-3) pode ser suficiente para capturar as cores dominantes.
+
+    2. **Imagens Complexas (Com Muitas Variações de Cor)**
+    - **Exemplo:** Uma pintura abstrata cheia de variações de cor e textura.
+    - **Impacto na Análise:**
+      - **PCA:** Pode ser útil para reduzir o ruído e destacar padrões de cor predominantes, mas cuidado para não perder detalhes sutis que podem ser psicologicamente significativos.
+      - **Clusterização:** Um número maior de clusters (5-10) pode ser necessário para capturar as nuances da imagem. PCA pode ajudar a acelerar o processamento, mas a precisão pode ser levemente sacrificada.
+
+    3. **Imagens de Alta Resolução**
+    - **Exemplo:** Fotos detalhadas de uma tela grande, capturando pinceladas e variações finas de cor.
+    - **Impacto na Análise:**
+      - **PCA:** Altamente recomendável se você precisa processar várias imagens grandes rapidamente. Isso vai comprimir os dados de cor, permitindo uma análise mais eficiente.
+      - **Clusterização:** A análise pode capturar tanto detalhes macro (cores gerais) quanto micro (detalhes das pinceladas). Porém, cuidado com a perda de precisão em cores devido ao PCA.
+
+    **Análise de Imagens de Arte Terapia**
+
+    Quando você analisa imagens de sessões de arte terapia, a interpretação das cores pode fornecer insights sobre o estado emocional ou psicológico do paciente. Aqui está como você pode proceder:
+
+    1. **Escolha do Tipo de Análise**
+    - **Sem PCA:** Se o objetivo é capturar cada nuance emocional expressa através das cores, não use PCA. Isso preservará cada detalhe de cor, importante para uma interpretação psicológica precisa.
+    - **Com PCA:** Use PCA se as imagens forem extremamente complexas e a quantidade de dados for muito grande, dificultando o processamento. Lembre-se de que isso pode simplificar demais as cores, mas ajudará a identificar padrões gerais.
+
+    2. **Número de Clusters**
+    - **Imagens Simples:** Use menos clusters (2-4) para capturar os elementos principais.
+    - **Imagens Complexas:** Aumente o número de clusters (5-10) para capturar uma gama mais ampla de emoções e expressões.
+
+    3. **Interpretação Psicológica das Cores**
+    - **Aplicação:** Cada cor identificada pode ser relacionada a emoções ou estados mentais específicos. Por exemplo, cores como vermelho podem indicar intensidade emocional ou conflito, enquanto azul pode representar calma e introspecção.
+    - **Contexto Terapêutico:** O contexto em que a pintura foi feita deve ser considerado ao interpretar os resultados. As cores e padrões podem refletir o processo terapêutico e as mudanças emocionais ao longo do tempo.
+
+    **Recomendações Específicas para Arte Terapia**
+    - **Evite PCA em Análises Críticas:** Para interpretações onde cada detalhe importa, como na análise emocional das pinturas, é melhor evitar PCA.
+    - **Documente o Contexto:** A análise deve ser contextualizada com informações sobre a sessão terapêutica, o estado emocional do paciente, e o objetivo da atividade artística.
+    - **Use Clusterização Adequada:** Ajuste o número de clusters com base na complexidade da imagem para capturar tanto os padrões gerais quanto as nuances importantes.
+
+    **Dicas:**
+    - Para imagens com muitas variações de cores, aumente o número de clusters para capturar melhor os detalhes.
+    - Revise as cores dominantes e suas interpretações psicológicas para insights adicionais sobre a composição da imagem.
     """)
 
 # Função para normalizar as cores para o intervalo [0, 1]
