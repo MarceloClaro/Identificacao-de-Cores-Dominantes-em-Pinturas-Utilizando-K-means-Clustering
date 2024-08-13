@@ -109,9 +109,12 @@ def interpret_color_psychology(color):
                 'Este arquétipo está relacionado com a energia primal e a determinação, sendo um indicador '
                 'de que o indivíduo pode estar enfrentando desafios ou conflitos internos. '
                 'Na psicologia das cores, o vermelho pode evocar emoções intensas, como amor ou raiva, e '
-                'é uma cor que muitas vezes chama à ação.'
+                'é uma cor que muitas vezes chama à ação. Estudos indicam que a exposição à cor vermelha '
+                'pode influenciar a fisiologia, como o aumento da oxigenação no cérebro e nos músculos, o que '
+                'reforça sua associação com energia e ativação emocional.'
                 '\n\nReferências: '
-                '[Yoon & Chun, 2022](https://typeset.io/papers/an-autobiographical-study-on-the-color-psychology-of-art-2wlwfd5v?utm_source=chatgpt).'
+                '[Weinzirl et al., 2009](https://typeset.io/papers/color-therapy-changes-blood-oxygenation-in-the-brain-and-3ys19rlbtq?utm_source=chatgpt), '
+                '[Cribier, 2011](https://typeset.io/papers/the-red-face-art-history-and-medical-representations-1j3gk638g7?utm_source=chatgpt).'                
             )
         },
         {
@@ -123,24 +126,30 @@ def interpret_color_psychology(color):
                 'representando sabedoria, introspecção e espiritualidade. '
                 'Este arquétipo pode refletir a busca por conhecimento e compreensão, '
                 'indicando um período de introspecção e paz interior. '
-                'Na psicologia das cores, o azul é conhecido por seu efeito calmante e é frequentemente '
-                'utilizado para promover tranquilidade e reduzir o estresse.'
+                'Na psicologia das cores, o azul é amplamente reconhecido por seus efeitos calmantes e é frequentemente utilizado '
+                'para promover tranquilidade e reduzir o estresse. Estudos mostram que a cor azul pode ter um efeito sedativo, '
+                'ajudando a diminuir a ansiedade e até mesmo a dor. Além disso, a obra de artistas como Picasso, em seu "Período Azul", '
+                'destaca como essa cor pode ser utilizada para expressar tristeza e sofrimento, refletindo emoções mais profundas através da arte.'
                 '\n\nReferências: '
-                '[Petric, 2023](https://typeset.io/papers/psychological-archetypes-1zi1yvvz?utm_source=chatgpt).'
+                '[Azeemi & Raza, 2005](https://doi.org/10.1093/ecam/neh137), '
+                '[Gharib, 2020](https://www.scirp.org/journal/paperinformation.aspx?paperid=102013).'
+                
             )
         },
         {
             'color': (1, 1, 0),
             'name': 'Amarelo',
             'interpretation': (
-                'Ligado à criatividade, intelecto e alegria. '
-                'O Amarelo está associado ao arquétipo do Herói na teoria junguiana, '
-                'representando a busca por iluminação, crescimento e o desenvolvimento do self. '
-                'Este arquétipo reflete o desejo de superar obstáculos e alcançar novos níveis de consciência. '
-                'Na psicologia das cores, o amarelo é frequentemente relacionado à alegria e ao otimismo, '
-                'mas também pode indicar ansiedade ou medo do fracasso.'
+                'Ligado à criatividade, intelecto e alegria. O Amarelo está associado ao arquétipo do Herói na teoria junguiana, '
+                'representando a busca por iluminação, crescimento e o desenvolvimento do self. Este arquétipo reflete o desejo de '
+                'superar obstáculos e alcançar novos níveis de consciência. Na psicologia das cores, o amarelo é frequentemente '
+                'relacionado à alegria e ao otimismo, mas também pode indicar ansiedade ou medo do fracasso. Pesquisas sugerem que '
+                'o amarelo pode influenciar positivamente o humor e a energia, promovendo sentimentos de felicidade e motivação. '
+                'Contudo, sua intensidade pode provocar cansaço visual e até frustração em alguns contextos, especialmente quando usado em excesso.'
                 '\n\nReferências: '
-                '[McDonald, 2020](https://typeset.io/papers/jungian-archetypes-a-step-towards-scientific-enquiry-14yljcno47?utm_source=chatgpt).'
+                '[Artitude, 2023](https://artitude.ca/incorporating-colour-into-art-therapy), '
+                '[Dunn-Edwards, 2015](https://www.dunnedwards.com/colors/specs-spaces/color-psychology-how-the-color-yellow-can-create-an-optimistic-space).'
+                
             )
         },
         {
