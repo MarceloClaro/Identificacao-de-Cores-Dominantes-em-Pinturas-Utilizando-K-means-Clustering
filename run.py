@@ -38,30 +38,341 @@ def euclidean_distance(c1, c2):
 def interpret_color_psychology(color):
     r, g, b = color
     colors_db = [
-        {'color': (1, 0, 0), 'name': 'Vermelho', 'interpretation': 'Representa paixão, energia, e agressividade.'},
-        {'color': (0, 0, 1), 'name': 'Azul', 'interpretation': 'Simboliza calma, confiança e harmonia.'},
-        {'color': (1, 1, 0), 'name': 'Amarelo', 'interpretation': 'Ligado à criatividade, intelecto e alegria.'},
-        {'color': (0, 1, 0), 'name': 'Verde', 'interpretation': 'Associado à natureza, crescimento e estabilidade.'},
-        {'color': (0, 0, 0), 'name': 'Preto', 'interpretation': 'Representa poder, mistério, e morte.'},
-        {'color': (1, 1, 1), 'name': 'Branco', 'interpretation': 'Simboliza pureza, inocência, e renovação.'},
-        {'color': (0.5, 0.5, 0.5), 'name': 'Cinza', 'interpretation': 'Simboliza neutralidade, sabedoria e maturidade.'},
-        {'color': (0.5, 0, 0.5), 'name': 'Roxo', 'interpretation': 'Ligado à espiritualidade, transformação e mistério.'},
-        {'color': (1, 0.5, 0), 'name': 'Laranja', 'interpretation': 'Representa energia, criatividade, e entusiasmo.'},
-        {'color': (0.5, 0.75, 0.5), 'name': 'Verde-claro', 'interpretation': 'Associado à tranquilidade, frescor e harmonia.'},
-        {'color': (0.4, 0.7, 0.6), 'name': 'Turquesa', 'interpretation': 'Representa equilíbrio emocional e tranquilidade.'},
-        {'color': (0.7, 0.2, 0.2), 'name': 'Carmesim', 'interpretation': 'Representa paixão, intensidade e força.'},
-        {'color': (0.6, 0.5, 0.8), 'name': 'Violeta', 'interpretation': 'Associado à intuição, inovação, e misticismo.'},
-        {'color': (0.7, 0.7, 0.7), 'name': 'Prata', 'interpretation': 'Conectado à pureza, precisão, e integridade.'},
-        {'color': (0.8, 0.4, 0), 'name': 'Âmbar', 'interpretation': 'Simboliza calor, segurança e aconchego.'},
-        {'color': (0.2, 0.8, 0.2), 'name': 'Verde-oliva', 'interpretation': 'Representa paz, diplomacia e harmonia.'},
-        {'color': (0.4, 0.2, 0.2), 'name': 'Marrom', 'interpretation': 'Simboliza estabilidade, confiabilidade e segurança.'},
-        {'color': (0.5, 0.4, 0.4), 'name': 'Bege', 'interpretation': 'Representa simplicidade, confiabilidade e tradição.'},
-        {'color': (1, 0.4, 0.7), 'name': 'Rosa', 'interpretation': 'Representa carinho, afeto e vulnerabilidade.'},
-        {'color': (0.6, 0.4, 0.2), 'name': 'Sépia', 'interpretation': 'Evoca nostalgia e antiguidade.'},
-        {'color': (0.4, 0.2, 0.6), 'name': 'Lavanda', 'interpretation': 'Representa serenidade, graça e elegância.'},
-        {'color': (0.3, 0.3, 0.7), 'name': 'Índigo', 'interpretation': 'Associado a pensamentos profundos e espiritualidade.'},
-        {'color': (0.3, 0.6, 0.3), 'name': 'Verde-musgo', 'interpretation': 'Representa resiliência, endurance e equilíbrio.'},
+        {
+            'color': (1, 0, 0),
+            'name': 'Vermelho',
+            'interpretation': (
+                'Representa paixão, energia, e agressividade. '
+                'No contexto dos arquétipos junguianos, o Vermelho está associado ao arquétipo do Guerreiro, '
+                'simbolizando a força vital, a luta pela sobrevivência e a capacidade de agir. '
+                'Este arquétipo está relacionado com a energia primal e a determinação, sendo um indicador '
+                'de que o indivíduo pode estar enfrentando desafios ou conflitos internos. '
+                'Na psicologia das cores, o vermelho pode evocar emoções intensas, como amor ou raiva, e '
+                'é uma cor que muitas vezes chama à ação.'
+                '\n\nReferências: '
+                '[Yoon & Chun, 2022](https://typeset.io/papers/an-autobiographical-study-on-the-color-psychology-of-art-2wlwfd5v?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0, 0, 1),
+            'name': 'Azul',
+            'interpretation': (
+                'Simboliza calma, confiança e harmonia. '
+                'Nos arquétipos junguianos, o Azul está associado ao arquétipo do Sábio, '
+                'representando sabedoria, introspecção e espiritualidade. '
+                'Este arquétipo pode refletir a busca por conhecimento e compreensão, '
+                'indicando um período de introspecção e paz interior. '
+                'Na psicologia das cores, o azul é conhecido por seu efeito calmante e é frequentemente '
+                'utilizado para promover tranquilidade e reduzir o estresse.'
+                '\n\nReferências: '
+                '[Petric, 2023](https://typeset.io/papers/psychological-archetypes-1zi1yvvz?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (1, 1, 0),
+            'name': 'Amarelo',
+            'interpretation': (
+                'Ligado à criatividade, intelecto e alegria. '
+                'O Amarelo está associado ao arquétipo do Herói na teoria junguiana, '
+                'representando a busca por iluminação, crescimento e o desenvolvimento do self. '
+                'Este arquétipo reflete o desejo de superar obstáculos e alcançar novos níveis de consciência. '
+                'Na psicologia das cores, o amarelo é frequentemente relacionado à alegria e ao otimismo, '
+                'mas também pode indicar ansiedade ou medo do fracasso.'
+                '\n\nReferências: '
+                '[McDonald, 2020](https://typeset.io/papers/jungian-archetypes-a-step-towards-scientific-enquiry-14yljcno47?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0, 1, 0),
+            'name': 'Verde',
+            'interpretation': (
+                'Associado à natureza, crescimento e estabilidade. '
+                'No contexto dos arquétipos junguianos, o Verde está ligado ao arquétipo da Mãe Terra, '
+                'simbolizando o ciclo de vida, a nutrição e o renascimento. '
+                'Este arquétipo reflete uma conexão com a natureza e o desejo de estabilidade e crescimento. '
+                'Na psicologia das cores, o verde é visto como calmante e equilibrante, muitas vezes usado '
+                'para representar renovação e harmonia.'
+                '\n\nReferências: '
+                '[Bostan, 2022](https://typeset.io/papers/jungian-approach-to-cinema-archetypal-analysis-of-turning-1wvwee1k?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0, 0, 0),
+            'name': 'Preto',
+            'interpretation': (
+                'Representa poder, mistério, e morte. '
+                'O Preto está associado ao arquétipo da Sombra na teoria junguiana, '
+                'simbolizando os aspectos reprimidos ou desconhecidos do self. '
+                'Este arquétipo é crucial no processo de individuação, onde o confronto com a sombra leva '
+                'ao autoconhecimento e à integração do self. '
+                'Na psicologia das cores, o preto pode evocar sentimentos de luto, mistério, ou poder, '
+                'e é frequentemente associado ao desconhecido ou ao inconsciente.'
+                '\n\nReferências: '
+                '[Suinn, 1966](https://typeset.io/papers/jungian-personality-typology-and-color-dreaming-499qe6u2wp?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (1, 1, 1),
+            'name': 'Branco',
+            'interpretation': (
+                'Simboliza pureza, inocência, e renovação. '
+                'O Branco está ligado ao arquétipo do Inocente, representando a pureza primordial e a busca '
+                'pela verdade. Este arquétipo pode indicar um novo começo ou o desejo de simplicidade e clareza. '
+                'Na psicologia das cores, o branco é frequentemente associado à limpeza, virtude, e um estado de '
+                'paz espiritual.'
+                '\n\nReferências: '
+                '[Petric, 2023](https://typeset.io/papers/psychological-archetypes-1zi1yvvz?utm_source=chatgpt).'
+            )
+        },
+        # Adicione as outras cores aqui seguindo o mesmo padrão.
+        {
+            'color': (0.5, 0.5, 0.5),
+            'name': 'Cinza',
+            'interpretation': (
+                'Simboliza neutralidade, sabedoria e maturidade. '
+                'O Cinza está associado ao arquétipo do Sábio na teoria junguiana, '
+                'representando uma perspectiva equilibrada e ponderada sobre a vida. '
+                'Este arquétipo reflete a busca por conhecimento e a capacidade de ver as coisas como realmente são, '
+                'sem o viés emocional. '
+                'Na psicologia das cores, o cinza é muitas vezes visto como uma cor de compromisso, '
+                'posicionada entre o branco e o preto, e pode simbolizar a transição e a ambiguidade. '
+                'O cinza também pode sugerir uma forma de proteção, ocultando emoções para manter a paz e a neutralidade.'
+                '\n\nReferências: '
+                '[Kreitler & Kreitler, 1972](https://typeset.io/papers/personality-traits-and-meanings-of-colors-as-expressed-in-9xw2ljzo73?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.5, 0, 0.5),
+            'name': 'Roxo',
+            'interpretation': (
+                'Ligado à espiritualidade, transformação e mistério. '
+                'O Roxo está associado ao arquétipo do Mago, que simboliza a transformação, o poder pessoal e a busca por sabedoria oculta. '
+                'Este arquétipo sugere uma conexão com o inconsciente coletivo e o desejo de transcender as limitações da realidade comum. '
+                'Na psicologia das cores, o roxo é frequentemente associado à realeza, mistério e espiritualidade, '
+                'e é usado para evocar sentimentos de reverência e introspecção. '
+                'O roxo pode ser uma cor de mudança profunda, indicando um momento de transformação ou de passagem entre diferentes estados de ser.'
+                '\n\nReferências: '
+                '[Chae & Ho, 2005](https://typeset.io/papers/a-study-on-the-effect-of-color-preference-on-personality-and-1ltjg0j1kj?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (1, 0.5, 0),
+            'name': 'Laranja',
+            'interpretation': (
+                'Representa energia, criatividade, e entusiasmo. '
+                'O Laranja está ligado ao arquétipo do Amante, que simboliza a paixão, o prazer e a conexão com os outros. '
+                'Este arquétipo reflete um desejo de vivacidade e de experiências sensoriais intensas. '
+                'Na psicologia das cores, o laranja é visto como uma cor que estimula a criatividade e a comunicação, '
+                'sendo uma cor que pode elevar o humor e promover a sociabilidade. '
+                'O laranja é uma cor calorosa e encorajadora, que pode impulsionar a motivação e a determinação.'
+                '\n\nReferências: '
+                '[Heller, 2009](https://typeset.io/papers/the-psychology-of-color-effects-and-symbolism-1x52kfxx2?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.5, 0.75, 0.5),
+            'name': 'Verde-claro',
+            'interpretation': (
+                'Associado à tranquilidade, frescor e harmonia. '
+                'O Verde-claro está associado ao arquétipo do Curador, representando o desejo de cura e equilíbrio. '
+                'Este arquétipo reflete uma conexão profunda com a natureza e um desejo de restaurar a harmonia tanto interna quanto externa. '
+                'Na psicologia das cores, o verde-claro é frequentemente utilizado para criar um ambiente relaxante e refrescante, '
+                'sendo uma cor que promove a serenidade e o bem-estar. '
+                'O verde-claro pode indicar um período de recuperação e crescimento, incentivando a renovação e a paz.'
+                '\n\nReferências: '
+                '[Dumbar, 2004](https://typeset.io/papers/color-psychology-and-its-effect-on-behavior-and-mood-8f32d3x0x?utm_source=chatgpt).'
+            )
+        },
+        # Adicione as outras cores aqui seguindo o mesmo padrão.
+        {
+            'color': (0.4, 0.7, 0.6),
+            'name': 'Turquesa',
+            'interpretation': (
+                'Representa equilíbrio emocional e tranquilidade. '
+                'Turquesa está associada ao arquétipo do Curador, simbolizando a cura emocional e a comunicação clara. '
+                'Este arquétipo reflete a busca por harmonia e a capacidade de trazer clareza aos pensamentos e sentimentos. '
+                'Na psicologia das cores, o turquesa é frequentemente utilizado para criar uma sensação de calma e frescor, '
+                'incentivando a cura e a renovação emocional. '
+                'É uma cor que promove o equilíbrio entre o intelecto e as emoções, sendo ideal para ambientes que exigem clareza e tranquilidade.'
+                '\n\nReferências: '
+                '[Birren, 1950](https://typeset.io/papers/the-symbolism-of-colors-9f73hx9qr?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.7, 0.2, 0.2),
+            'name': 'Carmesim',
+            'interpretation': (
+                'Representa paixão, intensidade e força. '
+                'Carmesim está associado ao arquétipo do Guerreiro, que simboliza força, coragem e determinação. '
+                'Este arquétipo reflete a vontade de enfrentar desafios e de lutar por aquilo que se acredita. '
+                'Na psicologia das cores, o carmesim é uma cor poderosa que pode estimular a paixão e a ação. '
+                'É frequentemente associada a emoções intensas, como amor e raiva, e pode ser usada para aumentar a motivação e a energia em um ambiente.'
+                '\n\nReferências: '
+                '[Azeemi, 2005](https://typeset.io/papers/color-therapy-and-color-psychology-2ffx7g39g?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.6, 0.5, 0.8),
+            'name': 'Violeta',
+            'interpretation': (
+                'Associado à intuição, inovação, e misticismo. '
+                'Violeta está ligado ao arquétipo do Mago, simbolizando transformação, sabedoria e intuição. '
+                'Este arquétipo representa a busca por conhecimento oculto e a capacidade de inovar e transformar a realidade. '
+                'Na psicologia das cores, o violeta é frequentemente utilizado para evocar sentimentos de misticismo e espiritualidade, '
+                'sendo uma cor que estimula a criatividade e a introspecção. '
+                'É uma cor que pode facilitar a meditação e a conexão com o eu interior.'
+                '\n\nReferências: '
+                '[Chae & Ho, 2005](https://typeset.io/papers/a-study-on-the-effect-of-color-preference-on-personality-and-1ltjg0j1kj?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.7, 0.7, 0.7),
+            'name': 'Prata',
+            'interpretation': (
+                'Conectado à pureza, precisão, e integridade. '
+                'Prata está associado ao arquétipo do Justo, que simboliza a busca pela verdade, integridade e equilíbrio. '
+                'Este arquétipo reflete o desejo de justiça e de viver de acordo com altos padrões morais e éticos. '
+                'Na psicologia das cores, o prata é visto como uma cor que simboliza sofisticação e modernidade, '
+                'além de estar associado à clareza de pensamento e à objetividade. '
+                'É uma cor que pode trazer uma sensação de calma e de resolução em ambientes de tomada de decisão.'
+                '\n\nReferências: '
+                '[Heller, 2009](https://typeset.io/papers/the-psychology-of-color-effects-and-symbolism-1x52kfxx2?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.8, 0.4, 0),
+            'name': 'Âmbar',
+            'interpretation': (
+                'Simboliza calor, segurança e aconchego. '
+                'Âmbar está ligado ao arquétipo do Protetor, representando a segurança, proteção e o cuidado. '
+                'Este arquétipo reflete o desejo de criar um ambiente seguro e acolhedor para si mesmo e para os outros. '
+                'Na psicologia das cores, o âmbar é uma cor calorosa que pode estimular sentimentos de segurança e conforto, '
+                'sendo ideal para espaços que precisam de uma atmosfera acolhedora e reconfortante. '
+                'É uma cor que promove a estabilidade emocional e a conexão com o lar.'
+                '\n\nReferências: '
+                '[Birren, 1950](https://typeset.io/papers/the-symbolism-of-colors-9f73hx9qr?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.2, 0.8, 0.2),
+            'name': 'Verde-oliva',
+            'interpretation': (
+                'Representa paz, diplomacia e harmonia. '
+                'Verde-oliva está associado ao arquétipo do Pacificador, simbolizando a diplomacia, a paz e a resolução de conflitos. '
+                'Este arquétipo reflete a capacidade de mediar e resolver situações difíceis com calma e equilíbrio. '
+                'Na psicologia das cores, o verde-oliva é frequentemente utilizado para criar uma sensação de estabilidade e equilíbrio, '
+                'sendo uma cor que promove a paz interior e a harmonia em situações de estresse. '
+                'É uma cor ideal para ambientes de negociação e de cooperação.'
+                '\n\nReferências: '
+                '[Azeemi, 2005](https://typeset.io/papers/color-therapy-and-color-psychology-2ffx7g39g?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.4, 0.2, 0.2),
+            'name': 'Marrom',
+            'interpretation': (
+                'Simboliza estabilidade, confiabilidade e segurança. '
+                'Marrom está associado ao arquétipo do Provedor, que simboliza a estabilidade, a segurança e a confiabilidade. '
+                'Este arquétipo reflete a capacidade de prover e de criar uma base sólida para os outros. '
+                'Na psicologia das cores, o marrom é visto como uma cor que traz uma sensação de solidez e de terra, '
+                'sendo frequentemente utilizado para criar ambientes que transmitem conforto e segurança. '
+                'É uma cor que sugere estabilidade e praticidade, ideal para espaços que exigem uma base firme.'
+                '\n\nReferências: '
+                '[Heller, 2009](https://typeset.io/papers/the-psychology-of-color-effects-and-symbolism-1x52kfxx2?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.5, 0.4, 0.4),
+            'name': 'Bege',
+            'interpretation': (
+                'Representa simplicidade, confiabilidade e tradição. '
+                'Bege está associado ao arquétipo do Tradicionalista, que simboliza a simplicidade, a confiabilidade e a valorização das tradições. '
+                'Este arquétipo reflete a importância das raízes e da continuidade em um mundo em constante mudança. '
+                'Na psicologia das cores, o bege é frequentemente utilizado para criar uma sensação de calma e de atemporalidade, '
+                'sendo uma cor que promove a simplicidade e a confiabilidade em ambientes que exigem estabilidade. '
+                'É uma cor que evoca uma sensação de conforto e de familiaridade, ideal para espaços que valorizam a tradição.'
+                '\n\nReferências: '
+                '[Kreitler & Kreitler, 1972](https://typeset.io/papers/personality-traits-and-meanings-of-colors-as-expressed-in-9xw2ljzo73?utm_source=chatgpt).'
+            )
+        },
+        # Adicione as outras cores aqui seguindo o mesmo padrão.
+        {
+            'color': (1, 0.4, 0.7),
+            'name': 'Rosa',
+            'interpretation': (
+                'Representa carinho, afeto e vulnerabilidade. '
+                'Rosa está associado ao arquétipo do Amante, que simboliza o amor, o afeto e a ternura. '
+                'Este arquétipo reflete a capacidade de expressar emoções de maneira suave e de cuidar dos outros com carinho. '
+                'Na psicologia das cores, o rosa é frequentemente utilizado para evocar sentimentos de compaixão e de calor emocional, '
+                'sendo uma cor que promove o afeto e a vulnerabilidade em relações interpessoais. '
+                'É uma cor ideal para criar ambientes que exigem uma atmosfera acolhedora e gentil.'
+                '\n\nReferências: '
+                '[Heller, 2009](https://typeset.io/papers/the-psychology-of-color-effects-and-symbolism-1x52kfxx2?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.6, 0.4, 0.2),
+            'name': 'Sépia',
+            'interpretation': (
+                'Evoca nostalgia e antiguidade. '
+                'Sépia está ligado ao arquétipo do Sábio, que simboliza a busca por conhecimento, experiência e profundidade. '
+                'Este arquétipo reflete a valorização da memória e da sabedoria acumulada ao longo do tempo. '
+                'Na psicologia das cores, o sépia é frequentemente utilizado para criar uma sensação de nostalgia e de conexão com o passado, '
+                'sendo uma cor que pode evocar memórias e trazer à tona sentimentos de tradição e de história. '
+                'É uma cor ideal para ambientes que valorizam a história e a continuidade.'
+                '\n\nReferências: '
+                '[Azeemi, 2005](https://typeset.io/papers/color-therapy-and-color-psychology-2ffx7g39g?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.4, 0.2, 0.6),
+            'name': 'Lavanda',
+            'interpretation': (
+                'Representa serenidade, graça e elegância. '
+                'Lavanda está associada ao arquétipo da Donzela, que simboliza a inocência, a pureza e a delicadeza. '
+                'Este arquétipo reflete a busca por beleza, harmonia e a expressão de sentimentos suaves e elegantes. '
+                'Na psicologia das cores, a lavanda é frequentemente utilizada para criar uma atmosfera de paz e tranquilidade, '
+                'sendo uma cor que promove a calma e a introspecção. '
+                'É ideal para espaços que necessitam de serenidade e uma estética graciosa.'
+                '\n\nReferências: '
+                '[Chae & Ho, 2005](https://typeset.io/papers/a-study-on-the-effect-of-color-preference-on-personality-and-1ltjg0j1kj?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.3, 0.3, 0.7),
+            'name': 'Índigo',
+            'interpretation': (
+                'Associado a pensamentos profundos e espiritualidade. '
+                'Índigo está ligado ao arquétipo do Místico, que simboliza a busca pela verdade interior e pela conexão espiritual. '
+                'Este arquétipo reflete o desejo de explorar os mistérios do universo e de se conectar com o espiritual. '
+                'Na psicologia das cores, o índigo é frequentemente utilizado para estimular a intuição e a percepção espiritual, '
+                'sendo uma cor que promove a introspecção e a meditação. '
+                'É ideal para ambientes voltados ao estudo, à reflexão profunda e à busca pelo conhecimento espiritual.'
+                '\n\nReferências: '
+                '[Azeemi, 2005](https://typeset.io/papers/color-therapy-and-color-psychology-2ffx7g39g?utm_source=chatgpt).'
+            )
+        },
+        {
+            'color': (0.3, 0.6, 0.3),
+            'name': 'Verde-musgo',
+            'interpretation': (
+                'Representa resiliência, endurance e equilíbrio. '
+                'Verde-musgo está associado ao arquétipo do Guardião, que simboliza a proteção, a preservação e a resiliência. '
+                'Este arquétipo reflete a capacidade de resistir às adversidades e de manter o equilíbrio em meio aos desafios. '
+                'Na psicologia das cores, o verde-musgo é frequentemente utilizado para criar uma sensação de estabilidade e de conexão com a natureza, '
+                'sendo uma cor que promove a força interior e a capacidade de adaptação. '
+                'É uma cor ideal para ambientes que necessitam de uma base sólida e um foco na resiliência.'
+                '\n\nReferências: '
+                '[Heller, 2009](https://typeset.io/papers/the-psychology-of-color-effects-and-symbolism-1x52kfxx2?utm_source=chatgpt).'
+            )
+        }        
     ]
+    
+    closest_color = min(colors_db, key=lambda c: euclidean_distance((r, g, b), c['color']))
+    return closest_color  # Retorna o dicionário inteiro
+
+
+
     
     closest_color = min(colors_db, key=lambda c: euclidean_distance((r, g, b), c['color']))
     return closest_color  # Retorna o dicionário inteiro
