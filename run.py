@@ -181,10 +181,15 @@ def interpret_color_psychology(color):
                 'Este arquétipo é crucial no processo de individuação, onde o confronto com a sombra leva '
                 'ao autoconhecimento e à integração do self. '
                 'Na psicologia das cores, o preto pode evocar sentimentos de luto, mistério, ou poder, '
-                'e é frequentemente associado ao desconhecido ou ao inconsciente.'
+                'e é frequentemente associado ao desconhecido ou ao inconsciente. Estudos em terapia de cores indicam '
+                'que o preto, quando usado em arte terapia, pode refletir estados de introspecção profunda e luto, mas também '
+                'pode ser uma cor de proteção e resistência emocional.'
                 '\n\nReferências: '
-                '[Suinn, 1966](https://typeset.io/papers/jungian-personality-typology-and-color-dreaming-499qe6u2wp?utm_source=chatgpt).'
+                '[Suinn, 1966](https://typeset.io/papers/jungian-personality-typology-and-color-dreaming-499qe6u2wp?utm_source=chatgpt), '
+                '[Azeemi & Raza, 2005](https://doi.org/10.1093/ecam/neh137), '
+                '[Gharib, 2020](https://www.scirp.org/journal/paperinformation.aspx?paperid=102013).'
             )
+
         },
         {
             'color': (1, 1, 1),
