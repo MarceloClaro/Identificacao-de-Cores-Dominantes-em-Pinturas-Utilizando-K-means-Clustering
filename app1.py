@@ -3,6 +3,7 @@ from sklearn.cluster import KMeans
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2
+import matplotlib.patheffects as pe  # Para efeitos nos textos
 
 # Título e descrição
 st.markdown("<h1 style='text-align: center;'>Identificação de Cores Dominantes em Pinturas</h1>", unsafe_allow_html=True)
@@ -82,21 +83,25 @@ if st.sidebar.button("Executar"):
                 fig_bar, ax_bar = plt.subplots(figsize=(8, 2))
                 ax_bar.axis('off')
 
-                # Desenhar retângulos para cada cor e adicionar o texto centralizado com o percentual
                 left = 0
                 for i, (color, pct) in enumerate(zip(colors, percentages)):
                     width = pct  # largura proporcional ao percentual
-                    # Adicionar retângulo
-                    ax_bar.add_patch(plt.Rectangle((left, 0), width, 1, color=hex_colors[i]))
+                    # Desenhar retângulo com borda branca para melhor separação
+                    rect = plt.Rectangle((left, 0), width, 1, color=hex_colors[i],
+                                         ec='white', lw=2)
+                    ax_bar.add_patch(rect)
                     
-                    # Calcular brilho da cor para escolher a cor do texto (fundo claro: texto preto, fundo escuro: texto branco)
+                    # Calcular brilho da cor para definir a cor do texto
                     r, g, b = color
                     brightness = r * 0.299 + g * 0.587 + b * 0.114
                     text_color = 'white' if brightness < 128 else 'black'
                     
-                    # Adicionar o texto com o percentual no centro do retângulo
-                    ax_bar.text(left + width/2, 0.5, f'{int(pct*100)}%', 
-                                ha='center', va='center', fontsize=12, fontweight='bold', color=text_color)
+                    # Adicionar o texto centralizado com o percentual
+                    txt = ax_bar.text(left + width/2, 0.5, f'{int(pct*100)}%', 
+                                      ha='center', va='center', fontsize=12, fontweight='bold', color=text_color)
+                    # Adicionar efeito de contorno no texto para melhorar a legibilidade
+                    txt.set_path_effects([pe.Stroke(linewidth=3, foreground='black'), pe.Normal()])
+                    
                     left += width
 
                 ax_bar.set_xlim(0, 1)
@@ -104,7 +109,7 @@ if st.sidebar.button("Executar"):
                 st.pyplot(fig_bar)
                 plt.close(fig_bar)
 
-                # Plotar gráfico de pizza das cores dominantes com aprimoramento na visualização dos números
+                # Plotar gráfico de pizza das cores dominantes com aprimoramento nos números
                 fig_pie, ax_pie = plt.subplots(figsize=(8, 8))
                 wedges, texts, autotexts = ax_pie.pie(
                     percentages,
@@ -114,10 +119,12 @@ if st.sidebar.button("Executar"):
                     startangle=140,
                     textprops={'fontsize': 12, 'fontweight': 'bold'}
                 )
-                # Ajustar cores dos textos para melhor legibilidade
+                # Aplicar path effects nos textos do gráfico de pizza para melhor contraste
                 for text in texts:
+                    text.set_path_effects([pe.Stroke(linewidth=2, foreground='white'), pe.Normal()])
                     text.set_color('grey')
                 for autotext in autotexts:
+                    autotext.set_path_effects([pe.Stroke(linewidth=2, foreground='black'), pe.Normal()])
                     autotext.set_color('white')
                 plt.title("Distribuição das Cores Dominantes")
                 st.pyplot(fig_pie)
